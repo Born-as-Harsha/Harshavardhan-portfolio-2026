@@ -81,8 +81,7 @@ export async function buildResumePdf(data: ResumeData): Promise<Uint8Array> {
     if (!existing) {
       page.node.set(PDFName.of("Annots"), pdf.context.obj([ref]));
     } else {
-      // @ts-expect-error - PDFArray.push exists at runtime
-      existing.push(ref);
+      (existing as unknown as { push: (r: unknown) => void }).push(ref);
     }
   };
 
