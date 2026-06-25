@@ -141,11 +141,31 @@ function ResumePage() {
         </Section>
 
         <Section title="Certifications">
-          <ul className="space-y-1.5">
+          <ul className="space-y-2">
             {CERTIFICATIONS.map((c) => (
               <li key={c.issuer}>
-                <span className="font-semibold text-slate-900">{c.issuer}:</span>{" "}
-                <span className="text-slate-700">{c.items.join(", ")}</span>
+                <div className="font-semibold text-slate-900">{c.issuer}</div>
+                <ul className="ml-4 list-disc text-slate-700 marker:text-[var(--ink)]">
+                  {c.items.map((it) => (
+                    <li key={it.name} className="break-inside-avoid">
+                      <span>{it.name}</span>
+                      {it.url && (
+                        <>
+                          {" "}
+                          <a
+                            href={it.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-[var(--ink)] underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                          >
+                            ↗ verify source
+                          </a>
+                          <span className="hidden text-[10.5px] text-slate-500 print:inline"> — {it.url}</span>
+                        </>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
