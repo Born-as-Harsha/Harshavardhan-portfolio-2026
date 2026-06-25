@@ -7,6 +7,7 @@ import {
   Briefcase, Trophy, Zap, Layers, Terminal, BrainCircuit, Binary,
   CircuitBoard, Microchip, Radio, FileCode2, Star,
 } from "lucide-react";
+import portrait from "@/assets/harsha-portrait.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -183,6 +184,16 @@ const PROJECTS = [
 
 const EXPERIENCE = [
   {
+    role: "Summer Internship — FPGA & VLSI Design",
+    org: "SSIT Solutions Pvt. Ltd.",
+    period: "Summer 2025",
+    points: [
+      "Industry-oriented internship focused on FPGA architecture and VLSI design fundamentals.",
+      "Hands-on training in digital design concepts, RTL workflows and FPGA-based prototyping.",
+      "Project-based learning sharpening problem-solving, debugging and communication skills.",
+    ],
+  },
+  {
     role: "Research & Project Work — VLSI / RTL",
     org: "KLEF University",
     period: "2024 — Present",
@@ -226,31 +237,23 @@ const RESEARCH = [
 const CERTS: { issuer: string; items: string[] }[] = [
   {
     issuer: "Cisco Networking Academy",
-    items: [
-      "Introduction to Cybersecurity",
-      "Networking Basics",
-      "Getting Started with Cisco Packet Tracer",
-    ],
+    items: ["Getting Started with Cisco Packet Tracer"],
   },
   {
     issuer: "Coursera",
     items: [
-      "Python for Everybody (specialization tracks)",
-      "Trust and Security with Google Cloud",
-      "Professional Networking for Career Growth",
+      "Python for Everybody",
+      "Python Data Structures",
+      "Computing: Bits and Bytes",
     ],
   },
   {
     issuer: "Linux Foundation",
-    items: ["Open Source Fundamentals", "Linux Basics"],
+    items: ["Introduction to Hands-On Linux"],
   },
   {
-    issuer: "NPTEL · Others",
-    items: [
-      "Electronics & Digital Design coursework",
-      "AI & Machine Learning with Python — Taras",
-      "Smart India Hackathon — Participation",
-    ],
+    issuer: "Taras",
+    items: ["AI & Machine Learning with Python Programming"],
   },
 ];
 
@@ -435,8 +438,13 @@ function Hero() {
                   <div className="grid place-items-center">
                     <div className="relative">
                       <div className="absolute inset-0 -m-3 rounded-full border border-primary/30 animate-[pulse-ring_2s_ease-out_infinite]" />
-                      <div className="grid h-36 w-36 place-items-center overflow-hidden rounded-full border border-white/10 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)] text-5xl font-bold text-gradient">
-                        YH
+                      <div className="h-36 w-36 overflow-hidden rounded-full border border-white/10 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)]">
+                        <img
+                          src={portrait.url}
+                          alt="Yelleti Harshavardhan"
+                          className="h-full w-full object-cover object-[center_20%]"
+                          loading="eager"
+                        />
                       </div>
                     </div>
                   </div>
