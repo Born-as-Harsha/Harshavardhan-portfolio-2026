@@ -6,8 +6,10 @@ import {
   GraduationCap, Award, BookOpen, Code2, Sparkles, ArrowUpRight,
   Briefcase, Trophy, Zap, Layers, Terminal, BrainCircuit, Binary,
   CircuitBoard, Microchip, Radio, FileCode2, Star,
+  Download, Loader2,
 } from "lucide-react";
 import portrait from "@/assets/harsha-portrait.png.asset.json";
+import { buildResumePdf, downloadResumePdf, type ResumeData } from "@/lib/generate-resume-pdf";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -408,6 +410,7 @@ function Hero() {
             <a href={PROFILE.scholar} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold transition-colors hover:bg-white/10">
               <BookOpen className="h-4 w-4" /> Research
             </a>
+            <ResumeDownloadButton />
           </motion.div>
 
           <div className="mt-10 flex items-center gap-6 text-xs text-muted-foreground">
