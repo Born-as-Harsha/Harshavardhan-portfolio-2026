@@ -1,4 +1,21 @@
 import type { ResumeData } from "./generate-resume-pdf";
+import ssitCert from "@/assets/certs/ssit-fpga-vlsi.jpg.asset.json";
+import ijirtCert from "@/assets/certs/ijirt-reviewer.jpg.asset.json";
+import siemensCert from "@/assets/certs/eduskills-siemens.jpg.asset.json";
+
+/** Absolute URL helper — PDFs are read offline so links must be fully-qualified. */
+const SITE_ORIGIN =
+  typeof window !== "undefined" && window.location?.origin
+    ? window.location.origin
+    : "https://yelleti-harshavardhan.lovable.app";
+const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_ORIGIN}${path}`);
+
+export const CERT_SOURCES = {
+  ssit: abs(ssitCert.url),
+  ijirt: abs(ijirtCert.url),
+  siemens: abs(siemensCert.url),
+  coursera: "https://www.coursera.org/learner/harshavardhan-yelleti",
+} as const;
 
 export const PROFILE = {
   name: "Yelleti Harshavardhan",
@@ -110,14 +127,31 @@ export const RESEARCH = [
   },
 ];
 
-export const CERTIFICATIONS: { issuer: string; items: string[] }[] = [
-  { issuer: "SSIT (Sense Semiconductor & IT Solutions)", items: ["Summer Internship 2026 — FPGA & VLSI Foundation Course (SSIT-2026-1196)"] },
-  { issuer: "AICTE – EduSkills × Siemens", items: ["Virtual Internship — Conceptual CAE Design & Simulation (8 weeks)"] },
-  { issuer: "IJIRT", items: ["Certificate of Reviewer Recognition — Int'l Journal of Innovative Research in Technology (ISSN 2349-6002)"] },
-  { issuer: "Taras", items: ["AI & Machine Learning with Python Programming"] },
-  { issuer: "Coursera", items: ["Python for Everybody", "Python Data Structures", "Computing: Bits and Bytes"] },
-  { issuer: "Linux Foundation", items: ["Introduction to Hands-On Linux"] },
-  { issuer: "Cisco Networking Academy", items: ["Getting Started with Cisco Packet Tracer"] },
+export type CertItem = { name: string; url?: string };
+export const CERTIFICATIONS: { issuer: string; items: CertItem[] }[] = [
+  {
+    issuer: "SSIT (Sense Semiconductor & IT Solutions)",
+    items: [{ name: "Summer Internship 2026 — FPGA & VLSI Foundation Course (SSIT-2026-1196)", url: CERT_SOURCES.ssit }],
+  },
+  {
+    issuer: "AICTE – EduSkills × Siemens",
+    items: [{ name: "Virtual Internship — Conceptual CAE Design & Simulation (8 weeks)", url: CERT_SOURCES.siemens }],
+  },
+  {
+    issuer: "IJIRT",
+    items: [{ name: "Certificate of Reviewer Recognition — Int'l Journal of Innovative Research in Technology (ISSN 2349-6002)", url: CERT_SOURCES.ijirt }],
+  },
+  { issuer: "Taras", items: [{ name: "AI & Machine Learning with Python Programming" }] },
+  {
+    issuer: "Coursera",
+    items: [
+      { name: "Python for Everybody", url: "https://www.coursera.org/learn/python" },
+      { name: "Python Data Structures", url: "https://www.coursera.org/learn/python-data" },
+      { name: "Computing: Bits and Bytes", url: "https://www.coursera.org/learn/bits-and-bytes" },
+    ],
+  },
+  { issuer: "Linux Foundation", items: [{ name: "Introduction to Hands-On Linux" }] },
+  { issuer: "Cisco Networking Academy", items: [{ name: "Getting Started with Cisco Packet Tracer" }] },
 ];
 
 export const CODING = [
@@ -188,7 +222,7 @@ export function buildResumeData(): ResumeData {
       {
         heading: "Certifications",
         blocks: CERTIFICATIONS.map((c) => ({
-          kind: "label-list" as const,
+          kind: "linked-list" as const,
           label: c.issuer,
           items: c.items,
         })),
