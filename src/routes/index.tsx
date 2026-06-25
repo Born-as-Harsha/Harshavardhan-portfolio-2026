@@ -237,28 +237,7 @@ const RESEARCH = [
   },
 ];
 
-const CERTS: { issuer: string; items: string[] }[] = [
-  {
-    issuer: "Cisco Networking Academy",
-    items: ["Getting Started with Cisco Packet Tracer"],
-  },
-  {
-    issuer: "Coursera",
-    items: [
-      "Python for Everybody",
-      "Python Data Structures",
-      "Computing: Bits and Bytes",
-    ],
-  },
-  {
-    issuer: "Linux Foundation",
-    items: ["Introduction to Hands-On Linux"],
-  },
-  {
-    issuer: "Taras",
-    items: ["AI & Machine Learning with Python Programming"],
-  },
-];
+import { CERTIFICATIONS as CERTS } from "@/lib/resume-data";
 
 const ACHIEVEMENTS = [
   { icon: Trophy, title: "CGPA 9.68 / 10", note: "Top of class, second-year ECE" },
