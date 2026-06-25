@@ -184,6 +184,16 @@ const PROJECTS = [
 
 const EXPERIENCE = [
   {
+    role: "Summer Internship — FPGA & VLSI Design",
+    org: "SSIT Solutions Pvt. Ltd.",
+    period: "Summer 2025",
+    points: [
+      "Industry-oriented internship focused on FPGA architecture and VLSI design fundamentals.",
+      "Hands-on training in digital design concepts, RTL workflows and FPGA-based prototyping.",
+      "Project-based learning sharpening problem-solving, debugging and communication skills.",
+    ],
+  },
+  {
     role: "Research & Project Work — VLSI / RTL",
     org: "KLEF University",
     period: "2024 — Present",
@@ -227,31 +237,23 @@ const RESEARCH = [
 const CERTS: { issuer: string; items: string[] }[] = [
   {
     issuer: "Cisco Networking Academy",
-    items: [
-      "Introduction to Cybersecurity",
-      "Networking Basics",
-      "Getting Started with Cisco Packet Tracer",
-    ],
+    items: ["Getting Started with Cisco Packet Tracer"],
   },
   {
     issuer: "Coursera",
     items: [
-      "Python for Everybody (specialization tracks)",
-      "Trust and Security with Google Cloud",
-      "Professional Networking for Career Growth",
+      "Python for Everybody",
+      "Python Data Structures",
+      "Computing: Bits and Bytes",
     ],
   },
   {
     issuer: "Linux Foundation",
-    items: ["Open Source Fundamentals", "Linux Basics"],
+    items: ["Introduction to Hands-On Linux"],
   },
   {
-    issuer: "NPTEL · Others",
-    items: [
-      "Electronics & Digital Design coursework",
-      "AI & Machine Learning with Python — Taras",
-      "Smart India Hackathon — Participation",
-    ],
+    issuer: "Taras",
+    items: ["AI & Machine Learning with Python Programming"],
   },
 ];
 
