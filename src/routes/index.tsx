@@ -277,6 +277,109 @@ const CODING = [
 
 /* ----------------------------- COMPONENTS ----------------------------- */
 
+function buildResumeData(): ResumeData {
+  return {
+    name: PROFILE.name,
+    title: "B.Tech ECE • VLSI / RTL / FPGA / ASIC Enthusiast",
+    contact: [PROFILE.location, PROFILE.phone, PROFILE.email],
+    links: [
+      { label: "GitHub", url: PROFILE.github },
+      { label: "LinkedIn", url: PROFILE.linkedin },
+      { label: "ORCID", url: PROFILE.orcid },
+      { label: "Scholar", url: PROFILE.scholar },
+    ],
+    sections: [
+      {
+        heading: "Education",
+        blocks: [
+          { kind: "kv", left: "B.Tech — Electronics & Communication Engineering", right: "2024 – 2026 (II Year)", sub: `${PROFILE.university} • CGPA ${PROFILE.cgpa}` },
+          { kind: "kv", left: "Intermediate (Class XII)", right: "2022 – 2024", sub: "Narayana Junior College, Visakhapatnam • 93.1%" },
+          { kind: "kv", left: "Secondary School (Class X)", right: "2021 – 2022", sub: "Narayana School, Narsipatnam • 83.66%" },
+        ],
+      },
+      {
+        heading: "Technical Skills",
+        blocks: SKILL_GROUPS.map((g) => ({
+          kind: "label-list" as const,
+          label: g.title,
+          items: g.items.map((i) => i.name),
+        })),
+      },
+      {
+        heading: "Projects",
+        blocks: PROJECTS.flatMap((p) => [
+          { kind: "kv" as const, left: p.title, right: p.tag, sub: `Tech: ${p.tech.join(", ")}` },
+          { kind: "para" as const, text: p.description },
+          { kind: "bullets" as const, items: p.highlights },
+        ]),
+      },
+      {
+        heading: "Experience",
+        blocks: EXPERIENCE.flatMap((e) => [
+          { kind: "kv" as const, left: e.role, right: e.period, sub: e.org },
+          { kind: "bullets" as const, items: e.points },
+        ]),
+      },
+      {
+        heading: "Research",
+        blocks: RESEARCH.flatMap((r) => [
+          { kind: "kv" as const, left: r.title, right: r.year, sub: `${r.venue} • ${r.keywords.join(", ")}` },
+          { kind: "para" as const, text: r.abstract },
+        ]),
+      },
+      {
+        heading: "Certifications",
+        blocks: CERTS.map((c) => ({
+          kind: "label-list" as const,
+          label: c.issuer,
+          items: c.items,
+        })),
+      },
+      {
+        heading: "Competitive Programming",
+        blocks: [
+          {
+            kind: "label-list",
+            label: "Profiles",
+            items: CODING.map((c) => `${c.name} (${c.handle})`),
+          },
+          {
+            kind: "para",
+            text: "Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical reasoning and debugging skills. Working knowledge of data structures (Arrays, Linked Lists, Trees, Stacks, Queues) and algorithms (Sorting, Searching).",
+          },
+        ],
+      },
+    ],
+  };
+}
+
+function ResumeDownloadButton() {
+  const [loading, setLoading] = useState(false);
+  const handle = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const bytes = await buildResumePdf(buildResumeData());
+      downloadResumePdf(bytes, "Yelleti-Harshavardhan-Resume.pdf");
+    } catch (err) {
+      console.error("Resume generation failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={handle}
+      disabled={loading}
+      className="group inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-5 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/20 hover:shadow-[var(--shadow-glow)] disabled:opacity-60"
+    >
+      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+      {loading ? "Generating…" : "Download Resume"}
+    </button>
+  );
+}
+
 function Nav() {
   const items = [
     ["About", "#about"],
