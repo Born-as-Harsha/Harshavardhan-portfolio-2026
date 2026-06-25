@@ -56,12 +56,22 @@ export const PROJECTS = [
 export const EXPERIENCE = [
   {
     role: "Summer Internship — FPGA & VLSI Design",
-    org: "SSIT Solutions Pvt. Ltd.",
-    period: "Summer 2025",
+    org: "Sense Semiconductor & IT Solutions Pvt. Ltd. (SSIT)",
+    period: "01 May 2026 – 15 June 2026",
     points: [
-      "Industry-oriented internship focused on FPGA architecture and VLSI design fundamentals.",
-      "Hands-on training in digital design concepts, RTL workflows and FPGA-based prototyping.",
-      "Project-based learning sharpening problem-solving, debugging and communication skills.",
+      "Completed the Foundation Course in FPGA & VLSI as part of SSIT's Summer Internship Program 2026 (Cert. No. SSIT-2026-1196).",
+      "Hands-on training in digital design, RTL workflows and FPGA-based prototyping.",
+      "Built industry-oriented mini-projects demonstrating problem-solving, debugging and communication skills.",
+    ],
+  },
+  {
+    role: "Virtual Internship — Siemens Conceptual CAE Design & Simulation",
+    org: "AICTE – EduSkills (Supported by Siemens)",
+    period: "April 2026 – June 2026 (8 weeks)",
+    points: [
+      "Selected for the 8-week AICTE–EduSkills Virtual Internship Program in Siemens Conceptual CAE Design & Simulation.",
+      "Worked through structured weekly modules on Polyaxofluxe Foaming with Inspire, Additive Manufacturing and Structural Analysis certification.",
+      "Completed weekly assessments, project documentation and a Final Assessment Test to earn the Virtual Internship Certificate.",
     ],
   },
   {
@@ -71,12 +81,19 @@ export const EXPERIENCE = [
     points: [
       "Designed and verified multiple RTL modules in Verilog on FPGA boards.",
       "Worked on pipelined processor and DSP datapath projects.",
-      "Contributed to a research manuscript on digital system design.",
+      "Serving as a Reviewer for the International Journal of Innovative Research in Technology (IJIRT, ISSN 2349-6002).",
     ],
   },
 ];
 
 export const RESEARCH = [
+  {
+    title: "Reviewer — International Journal of Innovative Research in Technology (IJIRT)",
+    venue: "IJIRT • ISSN 2349-6002 • Impact Factor 8.01",
+    year: "2026",
+    abstract: "Recognized as a peer reviewer for IJIRT, an international open-access, peer-reviewed and scholarly indexed journal — evaluating submissions in digital systems, VLSI and applied electronics.",
+    keywords: ["Peer Review", "VLSI", "Digital Systems", "IJIRT"],
+  },
   {
     title: "Research in Digital VLSI & FPGA-based Systems",
     venue: "Manuscript / Conference Submission",
@@ -94,6 +111,9 @@ export const RESEARCH = [
 ];
 
 export const CERTIFICATIONS: { issuer: string; items: string[] }[] = [
+  { issuer: "SSIT (Sense Semiconductor & IT Solutions)", items: ["Summer Internship 2026 — FPGA & VLSI Foundation Course (SSIT-2026-1196)"] },
+  { issuer: "AICTE – EduSkills × Siemens", items: ["Virtual Internship — Conceptual CAE Design & Simulation (8 weeks)"] },
+  { issuer: "IJIRT", items: ["Certificate of Reviewer Recognition — Int'l Journal of Innovative Research in Technology (ISSN 2349-6002)"] },
   { issuer: "Taras", items: ["AI & Machine Learning with Python Programming"] },
   { issuer: "Coursera", items: ["Python for Everybody", "Python Data Structures", "Computing: Bits and Bytes"] },
   { issuer: "Linux Foundation", items: ["Introduction to Hands-On Linux"] },
