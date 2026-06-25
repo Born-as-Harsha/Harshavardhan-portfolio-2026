@@ -793,8 +793,21 @@ function Certifications() {
             <div className="text-xs font-mono uppercase tracking-wider text-primary">{c.issuer}</div>
             <ul className="mt-4 space-y-2 text-sm">
               {c.items.map((i) => (
-                <li key={i} className="flex gap-2 text-foreground/90">
-                  <Award className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />{i}
+                <li key={i.name} className="flex gap-2 text-foreground/90">
+                  <Award className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                  <div className="min-w-0">
+                    <span>{i.name}</span>
+                    {i.url && (
+                      <a
+                        href={i.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-1 flex items-center gap-1 text-xs text-primary/90 hover:text-primary hover:underline"
+                      >
+                        <ExternalLink className="h-3 w-3" /> Verify source
+                      </a>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
