@@ -7,6 +7,7 @@ import {
   Briefcase, Trophy, Zap, Layers, Terminal, BrainCircuit, Binary,
   CircuitBoard, Microchip, Radio, FileCode2, Star,
 } from "lucide-react";
+import portrait from "@/assets/harsha-portrait.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -435,8 +436,13 @@ function Hero() {
                   <div className="grid place-items-center">
                     <div className="relative">
                       <div className="absolute inset-0 -m-3 rounded-full border border-primary/30 animate-[pulse-ring_2s_ease-out_infinite]" />
-                      <div className="grid h-36 w-36 place-items-center overflow-hidden rounded-full border border-white/10 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)] text-5xl font-bold text-gradient">
-                        YH
+                      <div className="h-36 w-36 overflow-hidden rounded-full border border-white/10 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)]">
+                        <img
+                          src={portrait.url}
+                          alt="Yelleti Harshavardhan"
+                          className="h-full w-full object-cover object-[center_20%]"
+                          loading="eager"
+                        />
                       </div>
                     </div>
                   </div>
