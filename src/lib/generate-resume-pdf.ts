@@ -1,11 +1,12 @@
-import { PDFDocument, StandardFonts, rgb, PDFPage, PDFFont } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb, PDFPage, PDFFont, PDFName, PDFString } from "pdf-lib";
 
 type ResumeSection = { heading: string; blocks: ResumeBlock[] };
 type ResumeBlock =
   | { kind: "kv"; left: string; right?: string; sub?: string }
   | { kind: "bullets"; items: string[] }
   | { kind: "para"; text: string }
-  | { kind: "label-list"; label: string; items: string[] };
+  | { kind: "label-list"; label: string; items: string[] }
+  | { kind: "linked-list"; label: string; items: { name: string; url?: string }[] };
 
 export type ResumeData = {
   name: string;
@@ -23,6 +24,7 @@ const ACCENT = rgb(0.04, 0.55, 0.75);
 const INK = rgb(0.12, 0.14, 0.18);
 const MUTED = rgb(0.42, 0.45, 0.5);
 const RULE = rgb(0.85, 0.87, 0.9);
+const LINK = rgb(0.04, 0.45, 0.72);
 
 function wrap(text: string, font: PDFFont, size: number, maxW: number): string[] {
   const words = text.split(/\s+/);
@@ -64,6 +66,23 @@ export async function buildResumePdf(data: ResumeData): Promise<Uint8Array> {
   ) => {
     const { x = MARGIN, size = 9.5, font = reg, color = INK } = opts;
     page.drawText(text, { x, y, size, font, color });
+  };
+
+  const addLink = (url: string, x: number, yBottom: number, w: number, h: number) => {
+    const annot = pdf.context.obj({
+      Type: "Annot",
+      Subtype: "Link",
+      Rect: [x, yBottom, x + w, yBottom + h],
+      Border: [0, 0, 0],
+      A: { Type: "Action", S: "URI", URI: PDFString.of(url) },
+    });
+    const ref = pdf.context.register(annot);
+    const existing = page.node.Annots();
+    if (!existing) {
+      page.node.set(PDFName.of("Annots"), pdf.context.obj([ref]));
+    } else {
+      (existing as unknown as { push: (r: unknown) => void }).push(ref);
+    }
   };
 
   // Header
@@ -148,6 +167,31 @@ export async function buildResumePdf(data: ResumeData): Promise<Uint8Array> {
           y -= 12;
         }
         y -= 3;
+      } else if (block.kind === "linked-list") {
+        // Issuer header line
+        ensure(14);
+        drawText(block.label + ":", { size: 9.5, font: bold });
+        y -= 12;
+        for (const item of block.items) {
+          const nameLines = wrap(item.name, reg, 9.5, CONTENT_W - 18);
+          const urlLine = item.url ? 11 : 0;
+          ensure(nameLines.length * 12 + urlLine + 2);
+          drawText("•", { x: MARGIN + 4, size: 10, color: ACCENT });
+          for (let i = 0; i < nameLines.length; i++) {
+            drawText(nameLines[i], { x: MARGIN + 16, size: 9.5 });
+            y -= 12;
+          }
+          if (item.url) {
+            const label = "↗ Verify source: " + item.url;
+            const truncated = label.length > 110 ? label.slice(0, 107) + "…" : label;
+            const w = obli.widthOfTextAtSize(truncated, 8.5);
+            drawText(truncated, { x: MARGIN + 16, size: 8.5, font: obli, color: LINK });
+            // link annotation rect uses bottom-left; y currently sits at baseline
+            addLink(item.url, MARGIN + 16, y - 1, Math.min(w, CONTENT_W - 16), 10);
+            y -= 11;
+          }
+        }
+        y -= 4;
       }
     }
     y -= 6;
