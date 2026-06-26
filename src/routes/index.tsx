@@ -464,9 +464,12 @@ function Hero() {
 
                   <div className="space-y-1.5 font-mono text-[11px] text-muted-foreground">
                     <div className="flex justify-between"><span>$ status</span><span className="text-primary">online</span></div>
-                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">VLSI · RTL</span></div>
+                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">VLSI Design</span></div>
+                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">RTL Design</span></div>
+                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">Digital Electronics</span></div>
                     <div className="flex justify-between"><span>$ cgpa</span><span className="text-foreground">9.68 / 10</span></div>
                     <div className="flex justify-between"><span>$ year</span><span className="text-foreground">II — B.Tech ECE</span></div>
+                    <div className="flex justify-between"><span>$ avail</span><span className="text-primary">Internships</span></div>
                   </div>
                 </div>
               </div>
@@ -567,17 +570,31 @@ function About() {
           className="glass rounded-3xl p-8 lg:col-span-2"
         >
           <p className="text-lg leading-relaxed text-foreground/90">
-            I'm a passionate second-year B.Tech ECE student at <span className="text-primary">KLEF University</span>, holding a CGPA of <span className="text-primary font-semibold">9.68/10</span>. My focus lies in <span className="font-semibold">VLSI Design, Semiconductor Engineering, FPGA Development, ASIC Flow, RTL Design (Verilog HDL), Digital Electronics, Embedded Systems and Computer Architecture</span>.
+            I'm a motivated second-year B.Tech ECE student at <span className="text-primary">KLEF University</span> with a CGPA of <span className="text-primary font-semibold">9.68/10</span>, preparing for a career in <span className="font-semibold">VLSI and Semiconductor Engineering</span>.
           </p>
           <p className="mt-5 leading-relaxed text-muted-foreground">
-            I love designing hardware-oriented projects, exploring modern semiconductor technologies and prototyping ideas on FPGAs. Alongside, I sharpen my edge through Python, Machine Learning, competitive programming and open-source contributions.
+            My core interests are Digital VLSI Design, RTL Design in Verilog HDL, FPGA Design, Digital and Analog Electronics, CMOS fundamentals, MOSFET analysis, and Computer Organization & Architecture. I'm also actively learning Embedded Systems.
           </p>
           <p className="mt-5 leading-relaxed text-muted-foreground">
-            My long-term goal is to contribute to the design of innovative, high-performance, energy-efficient digital systems at world-class semiconductor companies.
+            Alongside hardware, I work with Python and Machine Learning fundamentals, use Git & GitHub for every project, and keep sharpening my problem-solving on competitive-programming platforms.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2">
-            {["VLSI", "RTL", "FPGA", "ASIC", "Verilog", "Computer Arch", "Embedded", "Python", "ML", "Open Source"].map((t) => (
+            {[
+              "Digital VLSI Design",
+              "RTL Design (Verilog HDL)",
+              "FPGA Design",
+              "Digital Electronics",
+              "Analog Electronics",
+              "CMOS Fundamentals",
+              "MOSFET Analysis",
+              "Computer Organization & Architecture",
+              "Embedded Systems (Learning)",
+              "Python",
+              "Machine Learning Fundamentals",
+              "Git & GitHub",
+              "Problem Solving",
+            ].map((t) => (
               <span key={t} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground">{t}</span>
             ))}
           </div>
@@ -690,7 +707,7 @@ function Projects() {
               ))}
             </div>
             <a
-              href={PROFILE.github}
+              href={p.github ?? PROFILE.github}
               target="_blank" rel="noreferrer"
               className="mt-5 inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-primary transition-all hover:gap-2.5"
             >
