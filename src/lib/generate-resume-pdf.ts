@@ -182,7 +182,7 @@ export async function buildResumePdf(data: ResumeData): Promise<Uint8Array> {
             y -= 12;
           }
           if (item.url) {
-            const label = "↗ Verify source: " + item.url;
+            const label = "-> Verify source: " + item.url;
             const truncated = label.length > 110 ? label.slice(0, 107) + "…" : label;
             const w = obli.widthOfTextAtSize(truncated, 8.5);
             drawText(truncated, { x: MARGIN + 16, size: 8.5, font: obli, color: LINK });

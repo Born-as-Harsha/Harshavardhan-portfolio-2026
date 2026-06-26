@@ -158,7 +158,7 @@ function ResumePage() {
                             rel="noreferrer"
                             className="text-[var(--ink)] underline decoration-dotted underline-offset-2 hover:decoration-solid"
                           >
-                            ↗ verify source
+                            → verify source
                           </a>
                           <span className="hidden text-[10.5px] text-slate-500 print:inline"> — {it.url}</span>
                         </>
