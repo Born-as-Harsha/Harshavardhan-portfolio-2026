@@ -82,106 +82,111 @@ const ROLES = [
 
 const SKILL_GROUPS = [
   {
-    title: "VLSI & Hardware",
+    title: "VLSI & Semiconductor",
     icon: Microchip,
     items: [
-      { name: "Digital VLSI Design", level: 88 },
-      { name: "RTL Design (Verilog)", level: 85 },
-      { name: "FPGA Prototyping", level: 80 },
-      { name: "ASIC Design Flow", level: 72 },
-      { name: "Computer Architecture", level: 82 },
-      { name: "Digital Electronics", level: 92 },
+      { name: "Digital VLSI Design", level: 80 },
+      { name: "RTL Design (Verilog HDL)", level: 78 },
+      { name: "FPGA Design", level: 75 },
+      { name: "CMOS Fundamentals", level: 78 },
+      { name: "MOSFET Analysis", level: 80 },
+    ],
+  },
+  {
+    title: "Electronics",
+    icon: CircuitBoard,
+    items: [
+      { name: "Digital Electronics", level: 88 },
+      { name: "Analog Electronics", level: 80 },
+    ],
+  },
+  {
+    title: "Computer Organization & Architecture",
+    icon: Cpu,
+    items: [
+      { name: "Computer Organization", level: 82 },
+      { name: "Computer Architecture", level: 80 },
+    ],
+  },
+  {
+    title: "Embedded Systems",
+    icon: Layers,
+    items: [
+      { name: "Embedded Systems (Learning)", level: 55 },
     ],
   },
   {
     title: "Programming",
     icon: Terminal,
     items: [
-      { name: "Python", level: 88 },
-      { name: "C / C++", level: 82 },
-      { name: "Verilog HDL", level: 84 },
-      { name: "MATLAB", level: 70 },
-      { name: "DSA", level: 78 },
+      { name: "C", level: 80 },
+      { name: "Python", level: 82 },
+      { name: "Verilog HDL", level: 78 },
+      { name: "Problem Solving", level: 80 },
     ],
   },
   {
-    title: "EDA & Simulation",
-    icon: CircuitBoard,
-    items: [
-      { name: "Xilinx Vivado", level: 78 },
-      { name: "ModelSim / QuestaSim", level: 75 },
-      { name: "Cadence Tools", level: 60 },
-      { name: "LTspice", level: 80 },
-      { name: "Cisco Packet Tracer", level: 82 },
-    ],
-  },
-  {
-    title: "AI / ML & Tools",
+    title: "Machine Learning",
     icon: BrainCircuit,
     items: [
-      { name: "Machine Learning", level: 75 },
-      { name: "NumPy / Pandas", level: 80 },
-      { name: "Git & GitHub", level: 88 },
-      { name: "Linux", level: 78 },
-      { name: "TensorFlow basics", level: 65 },
+      { name: "Machine Learning Fundamentals", level: 65 },
+      { name: "NumPy / Pandas", level: 75 },
+    ],
+  },
+  {
+    title: "EDA & Simulation Tools",
+    icon: FileCode2,
+    items: [
+      { name: "Xilinx Vivado", level: 72 },
+      { name: "ModelSim", level: 70 },
+      { name: "NI Multisim", level: 78 },
+      { name: "LTspice", level: 75 },
+      { name: "Cisco Packet Tracer", level: 80 },
+      { name: "Git & GitHub", level: 82 },
     ],
   },
 ];
 
 const PROJECTS = [
   {
-    title: "4-bit ALU in Verilog",
+    title: "FPGA-Based 8-Bit ALU Using Verilog HDL",
     tag: "RTL · FPGA",
     icon: Binary,
     description:
-      "Designed and verified a 4-bit Arithmetic Logic Unit supporting arithmetic and logical operations, simulated with testbenches and synthesized on FPGA.",
-    tech: ["Verilog", "ModelSim", "Vivado"],
-    highlights: ["8 ALU operations", "Testbench coverage", "RTL → synthesis flow"],
+      "Designed and verified an 8-bit Arithmetic Logic Unit in Verilog HDL targeting an FPGA, with testbench-driven simulation and synthesis.",
+    tech: ["Verilog HDL", "Xilinx Vivado", "FPGA"],
+    highlights: ["8-bit ALU operations", "Testbench verification", "FPGA synthesis flow"],
+    github: "https://github.com/Born-as-Harsha/FPGA-8bit-ALU-Verilog",
   },
   {
-    title: "32-bit RISC Processor (Pipelined)",
-    tag: "Computer Architecture",
-    icon: Cpu,
+    title: "DC Analysis and Short Channel Effects in MOSFETs",
+    tag: "Analog VLSI",
+    icon: Microchip,
     description:
-      "RTL implementation of a 5-stage pipelined RISC processor with hazard detection and forwarding, written in Verilog and verified on FPGA.",
-    tech: ["Verilog", "Vivado", "FPGA"],
-    highlights: ["5-stage pipeline", "Hazard handling", "Single-cycle ISA subset"],
+      "Analyzed NMOS and PMOS transistor characteristics including short-channel effects and channel length modulation across operating regions.",
+    tech: ["NI Multisim", "LTspice"],
+    highlights: ["I_D-V_GS / I_D-V_DS plots", "Short-channel analysis", "Device-level insight"],
+    github: "https://github.com/Born-as-Harsha/MOSFET-DC-Analysis",
   },
   {
-    title: "UART Communication Protocol",
-    tag: "Digital Design",
-    icon: Radio,
+    title: "Student Activity & Achievement Management System",
+    tag: "Python Full Stack",
+    icon: FileCode2,
     description:
-      "Built a full-duplex UART transmitter and receiver in Verilog with configurable baud rate, parity and framing — synthesized and tested on FPGA.",
-    tech: ["Verilog", "FPGA", "Serial I/O"],
-    highlights: ["Configurable baud", "TX/RX FSMs", "Parity & framing checks"],
+      "Web-based system to manage student extracurricular activities and achievements, built with full-stack Python.",
+    tech: ["Python", "Full Stack", "Web"],
+    highlights: ["CRUD workflows", "Activity tracking", "Data management"],
+    github: "https://github.com/Born-as-Harsha/Student-Activity-Tracker",
   },
   {
-    title: "FIR Digital Filter on FPGA",
-    tag: "DSP · FPGA",
-    icon: Layers,
-    description:
-      "Parameterised FIR filter implemented in Verilog targeting Xilinx FPGA, with MATLAB-generated coefficients and waveform verification.",
-    tech: ["Verilog", "MATLAB", "Vivado"],
-    highlights: ["Parameterised taps", "MATLAB co-design", "On-board verification"],
-  },
-  {
-    title: "Smart Traffic Light Controller",
-    tag: "FSM · Embedded",
-    icon: CircuitBoard,
-    description:
-      "FSM-based traffic light controller modelled in Verilog with timing logic and emergency override, prototyped on FPGA dev-board.",
-    tech: ["Verilog", "FSM", "FPGA"],
-    highlights: ["Mealy/Moore FSM", "Emergency mode", "Real-time waveform"],
-  },
-  {
-    title: "ML — Predictive Analytics",
+    title: "Machine Learning for Weather Data Analysis",
     tag: "Python · ML",
     icon: BrainCircuit,
     description:
-      "End-to-end machine learning pipeline for predictive analytics using scikit-learn — data cleaning, feature engineering, model selection and evaluation.",
+      "End-to-end weather data pipeline using regression and clustering algorithms with standard evaluation metrics.",
     tech: ["Python", "scikit-learn", "Pandas"],
-    highlights: ["EDA pipeline", "Model comparison", "Cross-validation"],
+    highlights: ["EDA pipeline", "Regression + K-Means", "Model evaluation"],
+    github: "https://github.com/Born-as-Harsha/ML-Weather-Analysis",
   },
 ];
 
@@ -220,20 +225,12 @@ const EXPERIENCE = [
 
 const RESEARCH = [
   {
-    title: "Research in Digital VLSI & FPGA-based Systems",
-    venue: "Manuscript / Conference Submission",
-    year: "2025",
+    title: "Evaluation of Ripple Carry and Carry Look-Ahead Adder-Based 8-Bit ALU Architectures Using Verilog HDL",
+    venue: "Conference Paper • 2026",
+    year: "2026",
     abstract:
-      "Exploration of RTL-level optimizations and FPGA implementation strategies for energy-efficient digital systems.",
-    keywords: ["VLSI", "RTL", "FPGA", "Low Power"],
-  },
-  {
-    title: "AI-Assisted Hardware Design Concepts",
-    venue: "Working Paper",
-    year: "2025",
-    abstract:
-      "Investigating the role of machine learning in EDA flows, with focus on RTL generation aids and verification assistance.",
-    keywords: ["ML for EDA", "RTL", "Verification"],
+      "Evaluation of Ripple Carry and Carry Look-Ahead adder-based 8-bit ALU architectures implemented using Verilog HDL for FPGA-based digital design. My first research publication — marking the start of my work in VLSI research.",
+    keywords: ["VLSI", "Verilog HDL", "8-bit ALU", "Ripple Carry", "Carry Look-Ahead"],
   },
 ];
 
@@ -467,9 +464,12 @@ function Hero() {
 
                   <div className="space-y-1.5 font-mono text-[11px] text-muted-foreground">
                     <div className="flex justify-between"><span>$ status</span><span className="text-primary">online</span></div>
-                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">VLSI · RTL</span></div>
+                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">VLSI Design</span></div>
+                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">RTL Design</span></div>
+                    <div className="flex justify-between"><span>$ focus</span><span className="text-foreground">Digital Electronics</span></div>
                     <div className="flex justify-between"><span>$ cgpa</span><span className="text-foreground">9.68 / 10</span></div>
                     <div className="flex justify-between"><span>$ year</span><span className="text-foreground">II — B.Tech ECE</span></div>
+                    <div className="flex justify-between"><span>$ avail</span><span className="text-primary">Internships</span></div>
                   </div>
                 </div>
               </div>
@@ -570,17 +570,31 @@ function About() {
           className="glass rounded-3xl p-8 lg:col-span-2"
         >
           <p className="text-lg leading-relaxed text-foreground/90">
-            I'm a passionate second-year B.Tech ECE student at <span className="text-primary">KLEF University</span>, holding a CGPA of <span className="text-primary font-semibold">9.68/10</span>. My focus lies in <span className="font-semibold">VLSI Design, Semiconductor Engineering, FPGA Development, ASIC Flow, RTL Design (Verilog HDL), Digital Electronics, Embedded Systems and Computer Architecture</span>.
+            I'm a motivated second-year B.Tech ECE student at <span className="text-primary">KLEF University</span> with a CGPA of <span className="text-primary font-semibold">9.68/10</span>, preparing for a career in <span className="font-semibold">VLSI and Semiconductor Engineering</span>.
           </p>
           <p className="mt-5 leading-relaxed text-muted-foreground">
-            I love designing hardware-oriented projects, exploring modern semiconductor technologies and prototyping ideas on FPGAs. Alongside, I sharpen my edge through Python, Machine Learning, competitive programming and open-source contributions.
+            My core interests are Digital VLSI Design, RTL Design in Verilog HDL, FPGA Design, Digital and Analog Electronics, CMOS fundamentals, MOSFET analysis, and Computer Organization & Architecture. I'm also actively learning Embedded Systems.
           </p>
           <p className="mt-5 leading-relaxed text-muted-foreground">
-            My long-term goal is to contribute to the design of innovative, high-performance, energy-efficient digital systems at world-class semiconductor companies.
+            Alongside hardware, I work with Python and Machine Learning fundamentals, use Git & GitHub for every project, and keep sharpening my problem-solving on competitive-programming platforms.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2">
-            {["VLSI", "RTL", "FPGA", "ASIC", "Verilog", "Computer Arch", "Embedded", "Python", "ML", "Open Source"].map((t) => (
+            {[
+              "Digital VLSI Design",
+              "RTL Design (Verilog HDL)",
+              "FPGA Design",
+              "Digital Electronics",
+              "Analog Electronics",
+              "CMOS Fundamentals",
+              "MOSFET Analysis",
+              "Computer Organization & Architecture",
+              "Embedded Systems (Learning)",
+              "Python",
+              "Machine Learning Fundamentals",
+              "Git & GitHub",
+              "Problem Solving",
+            ].map((t) => (
               <span key={t} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground">{t}</span>
             ))}
           </div>
@@ -693,7 +707,7 @@ function Projects() {
               ))}
             </div>
             <a
-              href={PROFILE.github}
+              href={p.github ?? PROFILE.github}
               target="_blank" rel="noreferrer"
               className="mt-5 inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-primary transition-all hover:gap-2.5"
             >
