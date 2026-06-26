@@ -2,6 +2,9 @@ import type { ResumeData } from "./generate-resume-pdf";
 import ssitCert from "@/assets/certs/ssit-fpga-vlsi.jpg.asset.json";
 import ijirtCert from "@/assets/certs/ijirt-reviewer.jpg.asset.json";
 import siemensCert from "@/assets/certs/eduskills-siemens.jpg.asset.json";
+import tarasCert from "@/assets/certs/taras-ai-ml.pdf.asset.json";
+import linuxCert from "@/assets/certs/linux-foundation.pdf.asset.json";
+import ciscoCert from "@/assets/certs/cisco-packet-tracer.pdf.asset.json";
 
 /** Absolute URL helper — PDFs are read offline so links must be fully-qualified. */
 const SITE_ORIGIN =
@@ -14,6 +17,9 @@ export const CERT_SOURCES = {
   ssit: abs(ssitCert.url),
   ijirt: abs(ijirtCert.url),
   siemens: abs(siemensCert.url),
+  taras: abs(tarasCert.url),
+  linux: abs(linuxCert.url),
+  cisco: abs(ciscoCert.url),
   coursera: "https://www.coursera.org/learner/harshavardhan-yelleti",
 } as const;
 
@@ -57,17 +63,20 @@ export const EDUCATION = [
 ];
 
 export const SKILLS: { group: string; items: string[] }[] = [
-  { group: "VLSI & Hardware", items: ["Digital VLSI Design", "RTL Design (Verilog)", "FPGA Prototyping", "ASIC Design Flow", "Computer Architecture", "Digital Electronics", "MOSFET / CMOS Fundamentals"] },
-  { group: "Programming", items: ["C", "Python", "Verilog HDL", "Data Structures & Algorithms"] },
-  { group: "EDA & Simulation", items: ["Xilinx Vivado", "ModelSim / QuestaSim", "NI Multisim", "LTspice", "EasyEDA", "Cisco Packet Tracer"] },
-  { group: "ML & Python", items: ["NumPy", "Pandas", "Matplotlib", "Linear / Logistic Regression", "K-Means Clustering"] },
-  { group: "Communication & Networks", items: ["Digital Communication", "EM Waves & Transmission Lines", "Network Protocols & Security", "Signals & Communication Systems"] },
+  { group: "VLSI & Semiconductor", items: ["Digital VLSI Design", "RTL Design (Verilog HDL)", "FPGA Design", "CMOS Fundamentals", "MOSFET Analysis"] },
+  { group: "Electronics", items: ["Digital Electronics", "Analog Electronics"] },
+  { group: "Computer Organization & Architecture", items: ["Computer Organization", "Computer Architecture"] },
+  { group: "Embedded Systems", items: ["Embedded Systems (Learning)"] },
+  { group: "Programming", items: ["C", "Python", "Verilog HDL", "Problem Solving"] },
+  { group: "Machine Learning", items: ["Machine Learning Fundamentals", "NumPy", "Pandas"] },
+  { group: "EDA & Simulation Tools", items: ["Xilinx Vivado", "ModelSim", "NI Multisim", "LTspice", "Cisco Packet Tracer", "Git & GitHub"] },
 ];
 
 export const PROJECTS = [
-  { title: "DC Analysis & Short Channel Effects in MOSFETs", tag: "Analog VLSI", tech: ["NI Multisim", "LTspice"], description: "Analyzed NMOS and PMOS transistor characteristics including short-channel effects and channel length modulation across operating regions.", highlights: ["I_D-V_GS / I_D-V_DS plots", "Short-channel analysis", "Device-level insight"] },
-  { title: "ML for Weather Data Analysis", tag: "Python · ML", tech: ["Python", "scikit-learn", "Pandas"], description: "End-to-end weather data pipeline using regression and clustering algorithms with standard evaluation metrics.", highlights: ["EDA pipeline", "Regression + K-Means", "Model evaluation"] },
-  { title: "Activity & Achievement Tracker", tag: "Full Stack", tech: ["Python", "Web"], description: "Web-based system to manage student extracurricular activities and achievements built with full-stack Python concepts.", highlights: ["CRUD workflows", "Activity tracking", "Data management"] },
+  { title: "FPGA-Based 8-Bit ALU Using Verilog HDL", tag: "RTL · FPGA", tech: ["Verilog HDL", "Xilinx Vivado", "FPGA"], description: "Designed and verified an 8-bit Arithmetic Logic Unit in Verilog HDL targeting an FPGA, with testbench-driven simulation and synthesis.", highlights: ["8-bit ALU operations", "Testbench verification", "FPGA synthesis flow"], github: PROFILE.github + "/FPGA-8bit-ALU-Verilog" },
+  { title: "DC Analysis and Short Channel Effects in MOSFETs", tag: "Analog VLSI", tech: ["NI Multisim", "LTspice"], description: "Analyzed NMOS and PMOS transistor characteristics including short-channel effects and channel length modulation across operating regions.", highlights: ["I_D-V_GS / I_D-V_DS plots", "Short-channel analysis", "Device-level insight"], github: PROFILE.github + "/MOSFET-DC-Analysis" },
+  { title: "Student Activity & Achievement Management System", tag: "Python Full Stack", tech: ["Python", "Full Stack", "Web"], description: "Web-based system to manage student extracurricular activities and achievements, built with full-stack Python.", highlights: ["CRUD workflows", "Activity tracking", "Data management"], github: PROFILE.github + "/Student-Activity-Tracker" },
+  { title: "Machine Learning for Weather Data Analysis", tag: "Python · ML", tech: ["Python", "scikit-learn", "Pandas"], description: "End-to-end weather data pipeline using regression and clustering algorithms with standard evaluation metrics.", highlights: ["EDA pipeline", "Regression + K-Means", "Model evaluation"], github: PROFILE.github + "/ML-Weather-Analysis" },
 ];
 
 export const EXPERIENCE = [
@@ -105,53 +114,21 @@ export const EXPERIENCE = [
 
 export const RESEARCH = [
   {
-    title: "Reviewer — International Journal of Innovative Research in Technology (IJIRT)",
-    venue: "IJIRT • ISSN 2349-6002 • Impact Factor 8.01",
+  {
+    title: "Evaluation of Ripple Carry and Carry Look-Ahead Adder-Based 8-Bit ALU Architectures Using Verilog HDL",
+    venue: "Conference Paper • 2026",
     year: "2026",
-    abstract: "Recognized as a peer reviewer for IJIRT, an international open-access, peer-reviewed and scholarly indexed journal — evaluating submissions in digital systems, VLSI and applied electronics.",
-    keywords: ["Peer Review", "VLSI", "Digital Systems", "IJIRT"],
-  },
-  {
-    title: "Research in Digital VLSI & FPGA-based Systems",
-    venue: "Manuscript / Conference Submission",
-    year: "2025",
-    abstract: "Exploration of RTL-level optimizations and FPGA implementation strategies for energy-efficient digital systems.",
-    keywords: ["VLSI", "RTL", "FPGA", "Low Power"],
-  },
-  {
-    title: "AI-Assisted Hardware Design Concepts",
-    venue: "Working Paper",
-    year: "2025",
-    abstract: "Investigating the role of machine learning in EDA flows, with focus on RTL generation aids and verification assistance.",
-    keywords: ["ML for EDA", "RTL", "Verification"],
+    abstract: "Evaluation of Ripple Carry and Carry Look-Ahead adder-based 8-bit ALU architectures implemented using Verilog HDL for FPGA-based digital design. This is my first research publication, marking the beginning of my work in VLSI research.",
+    keywords: ["VLSI", "Verilog HDL", "8-bit ALU", "Ripple Carry", "Carry Look-Ahead"],
   },
 ];
 
 export type CertItem = { name: string; url?: string };
 export const CERTIFICATIONS: { issuer: string; items: CertItem[] }[] = [
-  {
-    issuer: "SSIT (Sense Semiconductor & IT Solutions)",
-    items: [{ name: "Summer Internship 2026 — FPGA & VLSI Foundation Course (SSIT-2026-1196)", url: CERT_SOURCES.ssit }],
-  },
-  {
-    issuer: "AICTE – EduSkills × Siemens",
-    items: [{ name: "Virtual Internship — Conceptual CAE Design & Simulation (8 weeks)", url: CERT_SOURCES.siemens }],
-  },
-  {
-    issuer: "IJIRT",
-    items: [{ name: "Certificate of Reviewer Recognition — Int'l Journal of Innovative Research in Technology (ISSN 2349-6002)", url: CERT_SOURCES.ijirt }],
-  },
-  { issuer: "Taras", items: [{ name: "AI & Machine Learning with Python Programming" }] },
-  {
-    issuer: "Coursera",
-    items: [
-      { name: "Python for Everybody", url: "https://www.coursera.org/learn/python" },
-      { name: "Python Data Structures", url: "https://www.coursera.org/learn/python-data" },
-      { name: "Computing: Bits and Bytes", url: "https://www.coursera.org/learn/bits-and-bytes" },
-    ],
-  },
-  { issuer: "Linux Foundation", items: [{ name: "Introduction to Hands-On Linux" }] },
-  { issuer: "Cisco Networking Academy", items: [{ name: "Getting Started with Cisco Packet Tracer" }] },
+  { issuer: "TARAS", items: [{ name: "AI & Machine Learning with Python Programming", url: CERT_SOURCES.taras }] },
+  { issuer: "Linux Foundation", items: [{ name: "Introduction to Hands-on Linux", url: CERT_SOURCES.linux }] },
+  { issuer: "Cisco Networking Academy", items: [{ name: "Getting Started with Cisco Packet Tracer", url: CERT_SOURCES.cisco }] },
+  { issuer: "Coursera", items: [{ name: "Python for Everybody", url: "https://www.coursera.org/learn/python" }] },
 ];
 
 export const CODING = [
