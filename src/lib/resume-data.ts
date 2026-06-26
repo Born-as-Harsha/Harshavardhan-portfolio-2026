@@ -6,22 +6,26 @@ import tarasCert from "@/assets/certs/taras-ai-ml.pdf.asset.json";
 import linuxCert from "@/assets/certs/linux-foundation.pdf.asset.json";
 import ciscoCert from "@/assets/certs/cisco-packet-tracer.pdf.asset.json";
 
-/** Absolute URL helper — PDFs are read offline so links must be fully-qualified. */
-const SITE_ORIGIN =
-  typeof window !== "undefined" && window.location?.origin
-    ? window.location.origin
-    : "https://yelleti-harshavardhan.lovable.app";
-const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_ORIGIN}${path}`);
-
+/** Relative paths render identically on SSR and client (no hydration mismatch).
+ *  PDF generation absolutizes them at click-time via `buildResumeData()`. */
 export const CERT_SOURCES = {
-  ssit: abs(ssitCert.url),
-  ijirt: abs(ijirtCert.url),
-  siemens: abs(siemensCert.url),
-  taras: abs(tarasCert.url),
-  linux: abs(linuxCert.url),
-  cisco: abs(ciscoCert.url),
+  ssit: ssitCert.url,
+  ijirt: ijirtCert.url,
+  siemens: siemensCert.url,
+  taras: tarasCert.url,
+  linux: linuxCert.url,
+  cisco: ciscoCert.url,
   coursera: "https://www.coursera.org/learner/harshavardhan-yelleti",
 } as const;
+
+const absolutize = (url?: string) => {
+  if (!url) return url;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (typeof window !== "undefined" && window.location?.origin) {
+    return window.location.origin + url;
+  }
+  return url;
+};
 
 export const PROFILE = {
   name: "Yelleti Harshavardhan",
@@ -200,7 +204,7 @@ export function buildResumeData(): ResumeData {
         blocks: CERTIFICATIONS.map((c) => ({
           kind: "linked-list" as const,
           label: c.issuer,
-          items: c.items,
+          items: c.items.map((it) => ({ name: it.name, url: absolutize(it.url) })),
         })),
       },
       {
