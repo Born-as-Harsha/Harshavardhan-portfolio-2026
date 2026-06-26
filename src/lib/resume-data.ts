@@ -114,7 +114,6 @@ export const EXPERIENCE = [
 
 export const RESEARCH = [
   {
-  {
     title: "Evaluation of Ripple Carry and Carry Look-Ahead Adder-Based 8-Bit ALU Architectures Using Verilog HDL",
     venue: "Conference Paper • 2026",
     year: "2026",
