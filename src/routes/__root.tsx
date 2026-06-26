@@ -81,10 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Portfolio of Yelleti Harshavardhan — B.Tech ECE undergraduate at KLEF specializing in VLSI, RTL, FPGA and ASIC design. CGPA 9.68." },
       { name: "author", content: "Yelleti Harshavardhan" },
       { property: "og:title", content: "Yelleti Harshavardhan — VLSI & Semiconductor Engineer" },
-      { property: "og:description", content: "Aspiring VLSI engineer building RTL, FPGA and ASIC projects. Research, publications and open-source work." },
+      { property: "og:description", content: "Portfolio of Yelleti Harshavardhan — B.Tech ECE undergraduate at KLEF specializing in VLSI, RTL, FPGA and ASIC design. CGPA 9.68." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Yelleti Harshavardhan — VLSI & Semiconductor Engineer" },
+      { name: "twitter:description", content: "Portfolio of Yelleti Harshavardhan — B.Tech ECE undergraduate at KLEF specializing in VLSI, RTL, FPGA and ASIC design. CGPA 9.68." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/7aac1121-42f4-4eb5-af8e-94617c8b4ea3" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/7aac1121-42f4-4eb5-af8e-94617c8b4ea3" },
     ],
     links: [
       {
