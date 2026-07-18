@@ -629,24 +629,40 @@ function Skills() {
                   {g.title}
                 </h3>
               </div>
-              <div className="space-y-3">
-                {g.items.map((it) => (
-                  <div key={it.name}>
-                    <div className="mb-1 flex justify-between text-sm">
+              <div className="flex flex-wrap gap-2">
+                {g.items.map((it, sIdx) => {
+                  const isAdvanced = it.level >= 90;
+                  const isProficient = it.level >= 80 && it.level < 90;
+                  const levelText = isAdvanced
+                    ? "Advanced"
+                    : isProficient
+                      ? "Proficient"
+                      : "Familiar";
+                  const badgeColor = isAdvanced
+                    ? "bg-primary/10 border-primary/20 text-primary shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.05)]"
+                    : isProficient
+                      ? "bg-sky-500/10 border-sky-500/20 text-sky-400"
+                      : "bg-emerald-500/10 border-emerald-500/20 text-emerald-400";
+
+                  return (
+                    <motion.div
+                      key={it.name}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: idx * 0.05 + sIdx * 0.03 }}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium transition-all hover:bg-white/10 hover:border-white/20 hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
+                    >
                       <span className="text-foreground/90">{it.name}</span>
-                      <span className="font-mono text-xs text-muted-foreground">{it.level}%</span>
-                    </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-white/5">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${it.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="h-full rounded-full bg-[var(--gradient-primary)]"
-                      />
-                    </div>
-                  </div>
-                ))}
+                      <span
+                        className={`inline-flex items-center rounded-full border px-1.5 py-0.5 text-[9px] font-mono font-medium tracking-wider uppercase ${badgeColor}`}
+                      >
+                        {levelText}
+                      </span>
+                    </motion.div>
+                  );
+                })}
               </div>
             </motion.div>
           );
