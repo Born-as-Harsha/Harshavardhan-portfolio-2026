@@ -29,8 +29,10 @@ const absolutize = (url?: string) => {
 
 export const PROFILE = {
   name: "Yelleti Harshavardhan",
-  title: "B.Tech ECE • VLSI / RTL / FPGA / ASIC Enthusiast",
+  title: "VLSI & Semiconductor Engineer in the making",
   university: "Koneru Lakshmaiah Education Foundation (KLEF University)",
+  degree: "B.Tech — Electronics & Communication Engineering",
+  year: "Second Year",
   cgpa: "9.68 / 10",
   email: "abhiharsha021@gmail.com",
   phone: "+91 79014 46220",
@@ -44,6 +46,16 @@ export const PROFILE = {
   hackerrank: "https://www.hackerrank.com/profile/kl2400040454",
   codeforces: "https://codeforces.com/profile/2400040454",
 };
+
+export const ROLES = [
+  "VLSI Engineer",
+  "RTL Designer",
+  "FPGA Developer",
+  "ASIC Design Enthusiast",
+  "Semiconductor Researcher",
+  "Open Source Contributor",
+  "ML Practitioner",
+];
 
 export const EDUCATION = [
   {
@@ -66,21 +78,145 @@ export const EDUCATION = [
   },
 ];
 
-export const SKILLS: { group: string; items: string[] }[] = [
-  { group: "VLSI & Semiconductor", items: ["Digital VLSI Design", "RTL Design (Verilog HDL)", "FPGA Design", "CMOS Fundamentals", "MOSFET Analysis"] },
-  { group: "Electronics", items: ["Digital Electronics", "Analog Electronics"] },
-  { group: "Computer Organization & Architecture", items: ["Computer Organization", "Computer Architecture"] },
-  { group: "Embedded Systems", items: ["Embedded Systems (Learning)"] },
-  { group: "Programming", items: ["C", "Python", "Verilog HDL", "Problem Solving"] },
-  { group: "Machine Learning", items: ["Machine Learning Fundamentals", "NumPy", "Pandas"] },
-  { group: "EDA & Simulation Tools", items: ["Xilinx Vivado", "ModelSim", "NI Multisim", "LTspice", "Cisco Packet Tracer", "Git & GitHub"] },
+export const SKILL_GROUPS = [
+  {
+    title: "VLSI & Semiconductor",
+    icon: "Microchip",
+    items: [
+      { name: "Digital VLSI Design", level: 80 },
+      { name: "RTL Design (Verilog HDL)", level: 78 },
+      { name: "FPGA Design", level: 75 },
+      { name: "CMOS Fundamentals", level: 78 },
+      { name: "MOSFET Analysis", level: 80 },
+    ],
+  },
+  {
+    title: "Electronics",
+    icon: "CircuitBoard",
+    items: [
+      { name: "Digital Electronics", level: 88 },
+      { name: "Analog Electronics", level: 80 },
+    ],
+  },
+  {
+    title: "Computer Organization & Architecture",
+    icon: "Cpu",
+    items: [
+      { name: "Computer Organization", level: 82 },
+      { name: "Computer Architecture", level: 80 },
+    ],
+  },
+  {
+    title: "Embedded Systems",
+    icon: "Layers",
+    items: [{ name: "Embedded Systems (Learning)", level: 55 }],
+  },
+  {
+    title: "Programming",
+    icon: "Terminal",
+    items: [
+      { name: "C", level: 80 },
+      { name: "Python", level: 82 },
+      { name: "Verilog HDL", level: 78 },
+      { name: "Problem Solving", level: 80 },
+    ],
+  },
+  {
+    title: "Machine Learning",
+    icon: "BrainCircuit",
+    items: [
+      { name: "Machine Learning Fundamentals", level: 65 },
+      { name: "NumPy / Pandas", level: 75 },
+    ],
+  },
+  {
+    title: "EDA & Simulation Tools",
+    icon: "FileCode2",
+    items: [
+      { name: "Xilinx Vivado", level: 72 },
+      { name: "ModelSim", level: 70 },
+      { name: "NI Multisim", level: 78 },
+      { name: "LTspice", level: 75 },
+      { name: "Cisco Packet Tracer", level: 80 },
+      { name: "Git & GitHub", level: 82 },
+    ],
+  },
 ];
 
+export const SKILLS = SKILL_GROUPS.map((g) => ({
+  group: g.title,
+  items: g.items.map((it) => it.name),
+}));
+
 export const PROJECTS = [
-  { title: "FPGA-Based 8-Bit ALU Using Verilog HDL", tag: "RTL · FPGA", tech: ["Verilog HDL", "Xilinx Vivado", "FPGA"], description: "Designed and verified an 8-bit Arithmetic Logic Unit in Verilog HDL targeting an FPGA, with testbench-driven simulation and synthesis.", highlights: ["8-bit ALU operations", "Testbench verification", "FPGA synthesis flow"], github: PROFILE.github + "/FPGA-8bit-ALU-Verilog" },
-  { title: "DC Analysis and Short Channel Effects in MOSFETs", tag: "Analog VLSI", tech: ["NI Multisim", "LTspice"], description: "Analyzed NMOS and PMOS transistor characteristics including short-channel effects and channel length modulation across operating regions.", highlights: ["I_D-V_GS / I_D-V_DS plots", "Short-channel analysis", "Device-level insight"], github: PROFILE.github + "/MOSFET-DC-Analysis" },
-  { title: "Student Activity & Achievement Management System", tag: "Python Full Stack", tech: ["Python", "Full Stack", "Web"], description: "Web-based system to manage student extracurricular activities and achievements, built with full-stack Python.", highlights: ["CRUD workflows", "Activity tracking", "Data management"], github: PROFILE.github + "/Student-Activity-Tracker" },
-  { title: "Machine Learning for Weather Data Analysis", tag: "Python · ML", tech: ["Python", "scikit-learn", "Pandas"], description: "End-to-end weather data pipeline using regression and clustering algorithms with standard evaluation metrics.", highlights: ["EDA pipeline", "Regression + K-Means", "Model evaluation"], github: PROFILE.github + "/ML-Weather-Analysis" },
+  {
+    title: "Pipelined RISC-V (RV32I) Processor Core",
+    tag: "RTL · Computer Architecture",
+    icon: "Cpu",
+    tech: ["Verilog HDL", "Xilinx Vivado", "ModelSim", "GTKWave"],
+    description:
+      "Designed and verified a 5-stage pipelined RISC-V (RV32I) processor core in Verilog HDL, featuring hazard detection, forwarding units, and instruction/data cache simulation.",
+    highlights: [
+      "5-stage pipelined execution path",
+      "Hazard detection & forwarding logic",
+      "Instruction & Data cache integration",
+    ],
+    github: PROFILE.github + "/RISCV-Pipelined-Core",
+  },
+  {
+    title: "FPGA-Based 8-Point Fast Fourier Transform (FFT) Processor",
+    tag: "RTL · DSP Architecture",
+    icon: "Radio",
+    tech: ["Verilog HDL", "Xilinx Vivado", "MATLAB"],
+    description:
+      "Implemented a butterfly-architecture-based 8-point FFT processor in Verilog for high-speed digital signal processing on FPGA, verifying accuracy against MATLAB models.",
+    highlights: [
+      "Butterfly computing unit optimization",
+      "Fixed-point arithmetic scaling",
+      "Validation with MATLAB test signals",
+    ],
+    github: PROFILE.github + "/FPGA-FFT-Processor",
+  },
+  {
+    title: "FPGA-Based 8-Bit ALU Using Verilog HDL",
+    tag: "RTL · FPGA",
+    icon: "Binary",
+    tech: ["Verilog HDL", "Xilinx Vivado", "FPGA"],
+    description:
+      "Designed and verified an 8-bit Arithmetic Logic Unit in Verilog HDL targeting an FPGA, with testbench-driven simulation and synthesis.",
+    highlights: ["8-bit ALU operations", "Testbench verification", "FPGA synthesis flow"],
+    github: PROFILE.github + "/FPGA-8bit-ALU-Verilog",
+  },
+  {
+    title: "DC Analysis and Short Channel Effects in MOSFETs",
+    tag: "Analog VLSI",
+    icon: "Microchip",
+    tech: ["NI Multisim", "LTspice"],
+    description:
+      "Analyzed NMOS and PMOS transistor characteristics including short-channel effects and channel length modulation across operating regions.",
+    highlights: ["I_D-V_GS / I_D-V_DS plots", "Short-channel analysis", "Device-level insight"],
+    github: PROFILE.github + "/MOSFET-DC-Analysis",
+  },
+  {
+    title: "Student Activity & Achievement Management System",
+    tag: "Python Full Stack",
+    icon: "FileCode2",
+    tech: ["Python", "Full Stack", "Web"],
+    description:
+      "Web-based system to manage student extracurricular activities and achievements, built with full-stack Python.",
+    highlights: ["CRUD workflows", "Activity tracking", "Data management"],
+    github: PROFILE.github + "/Student-Activity-Tracker",
+  },
+  {
+    title: "Machine Learning for Weather Data Analysis",
+    tag: "Python · ML",
+    icon: "BrainCircuit",
+    tech: ["Python", "scikit-learn", "Pandas"],
+    description:
+      "End-to-end weather data pipeline using regression and clustering algorithms with standard evaluation metrics.",
+    highlights: ["EDA pipeline", "Regression + K-Means", "Model evaluation"],
+    github: PROFILE.github + "/ML-Weather-Analysis",
+  },
 ];
 
 export const EXPERIENCE = [
@@ -93,6 +229,7 @@ export const EXPERIENCE = [
       "Hands-on training in digital design, RTL workflows and FPGA-based prototyping.",
       "Built industry-oriented mini-projects demonstrating problem-solving, debugging and communication skills.",
     ],
+    certUrl: CERT_SOURCES.ssit,
   },
   {
     role: "Virtual Internship — Siemens Conceptual CAE Design & Simulation",
@@ -103,6 +240,7 @@ export const EXPERIENCE = [
       "Worked through structured weekly modules on Polyaxofluxe Foaming with Inspire, Additive Manufacturing and Structural Analysis certification.",
       "Completed weekly assessments, project documentation and a Final Assessment Test to earn the Virtual Internship Certificate.",
     ],
+    certUrl: CERT_SOURCES.siemens,
   },
   {
     role: "Research & Project Work — VLSI / RTL",
@@ -113,25 +251,52 @@ export const EXPERIENCE = [
       "Worked on pipelined processor and DSP datapath projects.",
       "Serving as a Reviewer for the International Journal of Innovative Research in Technology (IJIRT, ISSN 2349-6002).",
     ],
+    certUrl: CERT_SOURCES.ijirt,
   },
 ];
 
 export const RESEARCH = [
   {
-    title: "Evaluation of Ripple Carry and Carry Look-Ahead Adder-Based 8-Bit ALU Architectures Using Verilog HDL",
+    title:
+      "Evaluation of Ripple Carry and Carry Look-Ahead Adder-Based 8-Bit ALU Architectures Using Verilog HDL",
     venue: "Conference Paper • 2026",
     year: "2026",
-    abstract: "Evaluation of Ripple Carry and Carry Look-Ahead adder-based 8-bit ALU architectures implemented using Verilog HDL for FPGA-based digital design. This is my first research publication, marking the beginning of my work in VLSI research.",
+    abstract:
+      "Evaluation of Ripple Carry and Carry Look-Ahead adder-based 8-bit ALU architectures implemented using Verilog HDL for FPGA-based digital design. This is my first research publication, marking the beginning of my work in VLSI research.",
     keywords: ["VLSI", "Verilog HDL", "8-bit ALU", "Ripple Carry", "Carry Look-Ahead"],
   },
 ];
 
 export type CertItem = { name: string; url?: string };
 export const CERTIFICATIONS: { issuer: string; items: CertItem[] }[] = [
-  { issuer: "TARAS", items: [{ name: "AI & Machine Learning with Python Programming", url: CERT_SOURCES.taras }] },
-  { issuer: "Linux Foundation", items: [{ name: "Introduction to Hands-on Linux", url: CERT_SOURCES.linux }] },
-  { issuer: "Cisco Networking Academy", items: [{ name: "Getting Started with Cisco Packet Tracer", url: CERT_SOURCES.cisco }] },
-  { issuer: "Coursera", items: [{ name: "Python for Everybody", url: "https://www.coursera.org/learn/python" }] },
+  {
+    issuer: "Sense Semiconductor (SSIT)",
+    items: [{ name: "FPGA & VLSI Design Internship Certificate", url: CERT_SOURCES.ssit }],
+  },
+  {
+    issuer: "AICTE – EduSkills (Siemens)",
+    items: [{ name: "Siemens Conceptual CAE Design & Simulation", url: CERT_SOURCES.siemens }],
+  },
+  {
+    issuer: "IJIRT Reviewer Board",
+    items: [{ name: "Journal Reviewer Appointment Certificate", url: CERT_SOURCES.ijirt }],
+  },
+  {
+    issuer: "TARAS",
+    items: [{ name: "AI & Machine Learning with Python Programming", url: CERT_SOURCES.taras }],
+  },
+  {
+    issuer: "Linux Foundation",
+    items: [{ name: "Introduction to Hands-on Linux", url: CERT_SOURCES.linux }],
+  },
+  {
+    issuer: "Cisco Networking Academy",
+    items: [{ name: "Getting Started with Cisco Packet Tracer", url: CERT_SOURCES.cisco }],
+  },
+  {
+    issuer: "Coursera",
+    items: [{ name: "Python for Everybody Specialization", url: CERT_SOURCES.coursera }],
+  },
 ];
 
 export const CODING = [
@@ -141,11 +306,31 @@ export const CODING = [
   { name: "Codeforces", handle: "2400040454", url: PROFILE.codeforces },
 ];
 
+export const ACHIEVEMENTS = [
+  { icon: "Trophy", title: "CGPA 9.68 / 10", note: "Top of class, second-year ECE" },
+  { icon: "Award", title: "Smart India Hackathon", note: "Participant" },
+  { icon: "Star", title: "CodeChef 3★", note: "Active competitive programmer" },
+  { icon: "BookOpen", title: "ORCID Researcher", note: "Active research profile" },
+  { icon: "Sparkles", title: "Multi-platform Coder", note: "LeetCode · CF · HR · GFG" },
+  { icon: "Zap", title: "Open Source Contributor", note: "GitHub @Born-as-Harsha" },
+];
+
 export const INTERESTS = [
   "VLSI and Semiconductor Devices",
   "GATE Preparation",
   "Competitive Programming",
   "Open Source",
+];
+
+export const CORE_COURSES = [
+  { name: "Digital VLSI Design", code: "ECE 3102" },
+  { name: "RTL Design with Verilog", code: "ECE 3105" },
+  { name: "Digital Electronics", code: "ECE 2101" },
+  { name: "Analog Electronics", code: "ECE 2202" },
+  { name: "Computer Organization & Architecture", code: "ECE 3201" },
+  { name: "Signals & Systems", code: "ECE 2103" },
+  { name: "Embedded Systems", code: "ECE 3204" },
+  { name: "Microprocessors & Microcontrollers", code: "ECE 3104" },
 ];
 
 export function buildResumeData(): ResumeData {
@@ -195,7 +380,12 @@ export function buildResumeData(): ResumeData {
       {
         heading: "Research",
         blocks: RESEARCH.flatMap((r) => [
-          { kind: "kv" as const, left: r.title, right: r.year, sub: `${r.venue} • ${r.keywords.join(", ")}` },
+          {
+            kind: "kv" as const,
+            left: r.title,
+            right: r.year,
+            sub: `${r.venue} • ${r.keywords.join(", ")}`,
+          },
           { kind: "para" as const, text: r.abstract },
         ]),
       },
@@ -210,8 +400,15 @@ export function buildResumeData(): ResumeData {
       {
         heading: "Competitive Programming",
         blocks: [
-          { kind: "label-list", label: "Profiles", items: CODING.map((c) => `${c.name} (${c.handle})`) },
-          { kind: "para", text: "Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical reasoning and debugging skills. Working knowledge of data structures and core algorithms." },
+          {
+            kind: "label-list",
+            label: "Profiles",
+            items: CODING.map((c) => `${c.name} (${c.handle})`),
+          },
+          {
+            kind: "para",
+            text: "Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical reasoning and debugging skills. Working knowledge of data structures and core algorithms.",
+          },
         ],
       },
       {

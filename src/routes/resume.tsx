@@ -19,9 +19,15 @@ export const Route = createFileRoute("/resume")({
   head: () => ({
     meta: [
       { title: "Resume — Yelleti Harshavardhan" },
-      { name: "description", content: "Print-friendly resume of Yelleti Harshavardhan — B.Tech ECE, VLSI / RTL / FPGA." },
+      {
+        name: "description",
+        content: "Print-friendly resume of Yelleti Harshavardhan — B.Tech ECE, VLSI / RTL / FPGA.",
+      },
       { property: "og:title", content: "Resume — Yelleti Harshavardhan" },
-      { property: "og:description", content: "Print-friendly resume of Yelleti Harshavardhan — B.Tech ECE, VLSI / RTL / FPGA." },
+      {
+        property: "og:description",
+        content: "Print-friendly resume of Yelleti Harshavardhan — B.Tech ECE, VLSI / RTL / FPGA.",
+      },
     ],
     links: [{ rel: "canonical", href: "/resume" }],
   }),
@@ -65,7 +71,11 @@ function ResumePage() {
             disabled={loading}
             className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 disabled:opacity-60"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
             {loading ? "Generating…" : "Download PDF"}
           </button>
         </div>
@@ -81,13 +91,26 @@ function ResumePage() {
           <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] text-slate-600">
             <span>{PROFILE.location}</span>
             <span>{PROFILE.phone}</span>
-            <a href={`mailto:${PROFILE.email}`} className="text-slate-700 underline-offset-2 hover:underline">{PROFILE.email}</a>
+            <a
+              href={`mailto:${PROFILE.email}`}
+              className="text-slate-700 underline-offset-2 hover:underline"
+            >
+              {PROFILE.email}
+            </a>
           </div>
           <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] text-slate-600">
-            <a href={PROFILE.github} target="_blank" rel="noreferrer" className="hover:underline">GitHub: Born-as-Harsha</a>
-            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="hover:underline">LinkedIn: harshaabhi</a>
-            <a href={PROFILE.orcid} target="_blank" rel="noreferrer" className="hover:underline">ORCID</a>
-            <a href={PROFILE.scholar} target="_blank" rel="noreferrer" className="hover:underline">Google Scholar</a>
+            <a href={PROFILE.github} target="_blank" rel="noreferrer" className="hover:underline">
+              GitHub: Born-as-Harsha
+            </a>
+            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer" className="hover:underline">
+              LinkedIn: harshaabhi
+            </a>
+            <a href={PROFILE.orcid} target="_blank" rel="noreferrer" className="hover:underline">
+              ORCID
+            </a>
+            <a href={PROFILE.scholar} target="_blank" rel="noreferrer" className="hover:underline">
+              Google Scholar
+            </a>
           </div>
         </header>
 
@@ -114,7 +137,9 @@ function ResumePage() {
               <Item left={p.title} right={p.tag} sub={`Tech: ${p.tech.join(", ")}`} />
               <p className="mt-1 text-slate-700">{p.description}</p>
               <ul className="mt-1 list-disc pl-5 text-slate-700 marker:text-[var(--ink)]">
-                {p.highlights.map((h) => <li key={h}>{h}</li>)}
+                {p.highlights.map((h) => (
+                  <li key={h}>{h}</li>
+                ))}
               </ul>
             </div>
           ))}
@@ -125,8 +150,22 @@ function ResumePage() {
             <div key={e.role} className="mb-3 break-inside-avoid">
               <Item left={e.role} right={e.period} sub={e.org} />
               <ul className="mt-1 list-disc pl-5 text-slate-700 marker:text-[var(--ink)]">
-                {e.points.map((p) => <li key={p}>{p}</li>)}
+                {e.points.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
               </ul>
+              {e.certUrl && (
+                <div className="no-print mt-1.5 pl-5 text-[11.5px]">
+                  <a
+                    href={e.certUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[var(--ink)] hover:underline"
+                  >
+                    → verify certificate
+                  </a>
+                </div>
+              )}
             </div>
           ))}
         </Section>
@@ -160,7 +199,10 @@ function ResumePage() {
                           >
                             → verify source
                           </a>
-                          <span className="hidden text-[10.5px] text-slate-500 print:inline"> — {it.url}</span>
+                          <span className="hidden text-[10.5px] text-slate-500 print:inline">
+                            {" "}
+                            — {it.url}
+                          </span>
                         </>
                       )}
                     </li>
@@ -176,13 +218,17 @@ function ResumePage() {
             <span className="font-semibold text-slate-900">Profiles:</span>{" "}
             {CODING.map((c, i) => (
               <span key={c.name} className="text-slate-700">
-                <a href={c.url} target="_blank" rel="noreferrer" className="hover:underline">{c.name}</a>
-                {" "}({c.handle}){i < CODING.length - 1 ? "  •  " : ""}
+                <a href={c.url} target="_blank" rel="noreferrer" className="hover:underline">
+                  {c.name}
+                </a>{" "}
+                ({c.handle}){i < CODING.length - 1 ? "  •  " : ""}
               </span>
             ))}
           </p>
           <p className="mt-1 text-slate-700">
-            Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical reasoning and debugging skills. Working knowledge of data structures and core algorithms.
+            Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical
+            reasoning and debugging skills. Working knowledge of data structures and core
+            algorithms.
           </p>
         </Section>
 
