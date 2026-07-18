@@ -226,7 +226,7 @@ function ResumePage() {
             ))}
           </p>
           <p className="mt-1 text-slate-700">
-            Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical
+            Active problem-solver on CodeChef (3-Star) and LeetCode. Strong analytical, logical
             reasoning and debugging skills. Working knowledge of data structures and core
             algorithms.
           </p>

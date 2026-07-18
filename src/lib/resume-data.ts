@@ -301,7 +301,7 @@ export const CERTIFICATIONS: { issuer: string; items: CertItem[] }[] = [
 
 export const CODING = [
   { name: "LeetCode", handle: "kl2400040454", url: PROFILE.leetcode },
-  { name: "CodeChef", handle: "klu2400040454 · 3★", url: PROFILE.codechef },
+  { name: "CodeChef", handle: "klu2400040454 · 3-Star", url: PROFILE.codechef },
   { name: "HackerRank", handle: "kl2400040454", url: PROFILE.hackerrank },
   { name: "Codeforces", handle: "2400040454", url: PROFILE.codeforces },
 ];
@@ -309,7 +309,7 @@ export const CODING = [
 export const ACHIEVEMENTS = [
   { icon: "Trophy", title: "CGPA 9.68 / 10", note: "Top of class, second-year ECE" },
   { icon: "Award", title: "Smart India Hackathon", note: "Participant" },
-  { icon: "Star", title: "CodeChef 3★", note: "Active competitive programmer" },
+  { icon: "Star", title: "CodeChef 3-Star", note: "Active competitive programmer" },
   { icon: "BookOpen", title: "ORCID Researcher", note: "Active research profile" },
   { icon: "Sparkles", title: "Multi-platform Coder", note: "LeetCode · CF · HR · GFG" },
   { icon: "Zap", title: "Open Source Contributor", note: "GitHub @Born-as-Harsha" },
@@ -407,7 +407,7 @@ export function buildResumeData(): ResumeData {
           },
           {
             kind: "para",
-            text: "Active problem-solver on CodeChef (3★) and LeetCode. Strong analytical, logical reasoning and debugging skills. Working knowledge of data structures and core algorithms.",
+            text: "Active problem-solver on CodeChef (3-Star) and LeetCode. Strong analytical, logical reasoning and debugging skills. Working knowledge of data structures and core algorithms.",
           },
         ],
       },
