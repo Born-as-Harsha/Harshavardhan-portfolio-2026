@@ -304,28 +304,41 @@ function Hero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative mx-auto w-full max-w-sm"
+          whileHover={{ y: -6, rotateY: 3, rotateX: -3 }}
+          transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
+          className="relative mx-auto w-full max-w-sm perspective-1000"
         >
           <div className="relative aspect-square">
-            <div className="absolute inset-0 rounded-[2rem] bg-[var(--gradient-primary)] opacity-30 blur-2xl" />
-            <div className="glass relative h-full w-full overflow-hidden rounded-[2rem] p-1">
-              <div className="relative h-full w-full overflow-hidden rounded-[1.8rem] bg-[var(--surface-1)]">
-                <div className="absolute inset-0 grid-bg opacity-60" />
-                <div className="absolute inset-0 flex flex-col justify-between p-6">
+            {/* Silicon wafer-like outer neon glow */}
+            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/30 to-[oklch(0.65_0.22_280)]/30 opacity-40 blur-2xl transition-opacity group-hover:opacity-60" />
+            <div className="glass relative h-full w-full overflow-hidden rounded-[2.5rem] p-1 border border-white/10 hover:border-primary/30 transition-colors">
+              <div className="relative h-full w-full overflow-hidden rounded-[2.3rem] bg-[var(--surface-1)]">
+                <div className="absolute inset-0 grid-bg opacity-40" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-[oklch(0.65_0.22_280)]/5" />
+                <div className="absolute inset-0 flex flex-col justify-between p-5">
+                  {/* Top Bar */}
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-black/30 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-primary backdrop-blur">
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary" /> harsha.sys
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1 text-[9px] font-mono uppercase tracking-wider text-primary border border-white/5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />{" "}
+                      SYSTEM: ONLINE
                     </span>
-                    <Microchip className="h-5 w-5 text-primary/70" />
+                    <span className="inline-flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+                      DEV: RV32I_CORE
+                    </span>
                   </div>
 
-                  <div className="grid place-items-center">
+                  {/* Photo Container with HUD Corner Markers */}
+                  <div className="grid place-items-center my-2">
                     <div className="relative">
-                      <div className="absolute inset-0 -m-3 rounded-full border border-primary/30 animate-[pulse-ring_2s_ease-out_infinite]" />
-                      <div className="h-36 w-36 overflow-hidden rounded-full border border-white/10 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)]">
+                      {/* Tech Target Corner Indicators */}
+                      <div className="absolute -left-2 -top-2 h-3.5 w-3.5 border-l border-t border-primary" />
+                      <div className="absolute -right-2 -top-2 h-3.5 w-3.5 border-r border-t border-primary" />
+                      <div className="absolute -left-2 -bottom-2 h-3.5 w-3.5 border-l border-b border-primary" />
+                      <div className="absolute -right-2 -bottom-2 h-3.5 w-3.5 border-r border-b border-primary" />
+
+                      <div className="h-28 w-28 overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-[var(--surface-2)] to-[var(--surface-1)] shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.1)]">
                         <img
                           src={portrait.url}
                           alt="Yelleti Harshavardhan"
@@ -336,34 +349,41 @@ function Hero() {
                     </div>
                   </div>
 
-                  <div className="space-y-1.5 font-mono text-[11px] text-muted-foreground">
+                  {/* Name and Designation */}
+                  <div className="text-center">
+                    <div className="font-[family-name:'Space_Grotesk',sans-serif] text-base font-bold tracking-tight text-foreground">
+                      Y. Harshavardhan
+                    </div>
+                    <div className="text-[10px] font-mono uppercase tracking-widest text-primary/80 mt-0.5">
+                      RTL & FPGA Developer
+                    </div>
+                  </div>
+
+                  {/* High-tech Specs Terminal */}
+                  <div className="space-y-1 font-mono text-[9px] text-muted-foreground bg-black/40 p-3 rounded-xl border border-white/5">
                     <div className="flex justify-between">
-                      <span>$ status</span>
-                      <span className="text-primary">online</span>
+                      <span className="text-primary/60">$ domain</span>
+                      <span className="text-foreground font-semibold">VLSI & RTL Design</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>$ focus</span>
-                      <span className="text-foreground">VLSI Design</span>
+                      <span className="text-primary/60">$ target</span>
+                      <span className="text-foreground font-semibold">FPGA & ASIC Flows</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>$ focus</span>
-                      <span className="text-foreground">RTL Design</span>
+                      <span className="text-primary/60">$ toolchain</span>
+                      <span className="text-foreground font-semibold">Vivado · ModelSim · DC</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>$ focus</span>
-                      <span className="text-foreground">Digital Electronics</span>
+                      <span className="text-primary/60">$ research</span>
+                      <span className="text-foreground font-semibold">
+                        GDI Logic & Device Phys.
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span>$ cgpa</span>
-                      <span className="text-foreground">{PROFILE.cgpa}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>$ year</span>
-                      <span className="text-foreground">II — B.Tech ECE</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>$ avail</span>
-                      <span className="text-primary">Internships</span>
+                      <span className="text-primary/60">$ education</span>
+                      <span className="text-foreground font-semibold">
+                        CGPA {PROFILE.cgpa} · 3rd Year
+                      </span>
                     </div>
                   </div>
                 </div>
