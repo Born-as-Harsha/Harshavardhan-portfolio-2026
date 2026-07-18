@@ -107,6 +107,8 @@ function ResumeDownloadButton() {
       downloadResumePdf(bytes, "Yelleti-Harshavardhan-Resume.pdf");
     } catch (err) {
       console.error("Resume generation failed", err);
+      const msg = err instanceof Error ? err.message : String(err);
+      alert("Resume generation failed: " + msg);
     } finally {
       setLoading(false);
     }
