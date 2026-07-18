@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "harshavardhan-portfolio-mcp",
+      "version": "0.1.0",
+      "title": "Yelleti Harshavardhan — Portfolio MCP"
+    },
+    "tools": [
+      {
+        "name": "get_profile",
+        "title": "Get profile",
+        "description": "Get Yelleti Harshavardhan's core profile: name, title, university, degree, CGPA, contact links, roles, education, and interests.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_projects",
+        "title": "Get projects",
+        "description": "List Harshavardhan's engineering projects (VLSI, RTL, FPGA, ML, full-stack) with tech stack, highlights, and GitHub links. Optionally filter by tag substring.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "tag": {
+              "description": "Case-insensitive substring to match against a project's tag (e.g. 'RTL', 'FPGA', 'ML').",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_experience",
+        "title": "Get experience",
+        "description": "Return Harshavardhan's internships and research/project work with role, organization, dates, bullet points, and certificate URLs.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_skills",
+        "title": "Get skills",
+        "description": "Return categorized technical skills across VLSI, Electronics, Computer Architecture, Embedded, Programming, ML, and EDA tools, each with a self-rated proficiency (0-100).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_research",
+        "title": "Get research",
+        "description": "Return Harshavardhan's research publications and working papers with title, venue, year, abstract, and keywords.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_certifications",
+        "title": "Get certifications",
+        "description": "Return Harshavardhan's certifications grouped by issuer, each with a verification URL when available.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_coding_profiles",
+        "title": "Get coding profiles",
+        "description": "Return Harshavardhan's competitive-programming handles (LeetCode, CodeChef, HackerRank, Codeforces) and notable achievements.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_resume_links",
+        "title": "Get resume links",
+        "description": "Return canonical URLs for viewing Harshavardhan's portfolio, print-ready resume page, and social/research profiles.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
