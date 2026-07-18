@@ -12,18 +12,9 @@ export default defineTool({
     content: [
       {
         type: "text",
-        text: JSON.stringify(
-          { profile: PROFILE, roles: ROLES, education: EDUCATION, interests: INTERESTS },
-          null,
-          2,
-        ),
+        text: JSON.stringify({ profile: PROFILE, roles: ROLES, education: EDUCATION, interests: INTERESTS }, null, 2),
       },
     ],
-    structuredContent: {
-      profile: PROFILE,
-      roles: ROLES,
-      education: EDUCATION,
-      interests: INTERESTS,
-    },
+    structuredContent: { profile: PROFILE, roles: ROLES, education: EDUCATION, interests: INTERESTS },
   }),
 });

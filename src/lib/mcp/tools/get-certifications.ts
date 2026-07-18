@@ -4,8 +4,7 @@ import { CERTIFICATIONS } from "@/lib/resume-data";
 export default defineTool({
   name: "get_certifications",
   title: "Get certifications",
-  description:
-    "Return Harshavardhan's certifications grouped by issuer, each with a verification URL when available.",
+  description: "Return Harshavardhan's certifications grouped by issuer, each with a verification URL when available.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: () => ({

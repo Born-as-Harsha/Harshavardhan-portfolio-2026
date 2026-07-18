@@ -11,9 +11,7 @@ export default defineTool({
     tag: z
       .string()
       .optional()
-      .describe(
-        "Case-insensitive substring to match against a project's tag (e.g. 'RTL', 'FPGA', 'ML').",
-      ),
+      .describe("Case-insensitive substring to match against a project's tag (e.g. 'RTL', 'FPGA', 'ML')."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: ({ tag }) => {

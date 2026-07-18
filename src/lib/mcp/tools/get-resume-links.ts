@@ -4,8 +4,7 @@ import { PROFILE } from "@/lib/resume-data";
 export default defineTool({
   name: "get_resume_links",
   title: "Get resume links",
-  description:
-    "Return canonical URLs for viewing Harshavardhan's portfolio, print-ready resume page, and social/research profiles.",
+  description: "Return canonical URLs for viewing Harshavardhan's portfolio, print-ready resume page, and social/research profiles.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: () => {
