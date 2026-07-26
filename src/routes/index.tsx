@@ -29,10 +29,9 @@ import {
   FileCode2,
   Star,
   Download,
-  Loader2,
 } from "lucide-react";
 import portrait from "@/assets/harsha-portrait.png.asset.json";
-import { buildResumePdf, downloadResumePdf } from "@/lib/generate-resume-pdf";
+import resumePdf from "@/assets/harsha-resume.pdf.asset.json";
 import {
   PROFILE,
   ROLES,
@@ -44,7 +43,6 @@ import {
   CODING,
   ACHIEVEMENTS,
   CORE_COURSES,
-  buildResumeData,
 } from "@/lib/resume-data";
 
 export const Route = createFileRoute("/")({
@@ -98,31 +96,15 @@ const projectIconMap = { Cpu, Radio, Binary, Microchip, FileCode2, BrainCircuit 
 /* ----------------------------- COMPONENTS ----------------------------- */
 
 function ResumeDownloadButton() {
-  const [loading, setLoading] = useState(false);
-  const handle = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const bytes = await buildResumePdf(buildResumeData());
-      downloadResumePdf(bytes, "Yelleti-Harshavardhan-Resume.pdf");
-    } catch (err) {
-      console.error("Resume generation failed", err);
-      const msg = err instanceof Error ? err.message : String(err);
-      alert("Resume generation failed: " + msg);
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
-    <button
-      type="button"
-      onClick={handle}
-      disabled={loading}
-      className="group inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-5 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/20 hover:shadow-[var(--shadow-glow)] disabled:opacity-60"
+    <a
+      href={resumePdf.url}
+      download="Yelleti-Harshavardhan-Resume.pdf"
+      className="group inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-5 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/20 hover:shadow-[var(--shadow-glow)]"
     >
-      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-      {loading ? "Generating…" : "Download Resume"}
-    </button>
+      <Download className="h-4 w-4" />
+      Download Resume
+    </a>
   );
 }
 

@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowLeft, Download, Loader2, Printer } from "lucide-react";
+import { ArrowLeft, Download, Printer } from "lucide-react";
 import {
   PROFILE,
   EDUCATION,
@@ -11,9 +10,8 @@ import {
   CERTIFICATIONS,
   CODING,
   INTERESTS,
-  buildResumeData,
 } from "@/lib/resume-data";
-import { buildResumePdf, downloadResumePdf } from "@/lib/generate-resume-pdf";
+import resumePdf from "@/assets/harsha-resume.pdf.asset.json";
 
 export const Route = createFileRoute("/resume")({
   head: () => ({
@@ -35,22 +33,6 @@ export const Route = createFileRoute("/resume")({
 });
 
 function ResumePage() {
-  const [loading, setLoading] = useState(false);
-  const handleDownload = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const bytes = await buildResumePdf(buildResumeData());
-      downloadResumePdf(bytes, "Yelleti-Harshavardhan-Resume.pdf");
-    } catch (err) {
-      console.error("Resume generation failed", err);
-      const msg = err instanceof Error ? err.message : String(err);
-      alert("Resume generation failed: " + msg);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="resume-page min-h-screen bg-[#f4f5f7] py-8 print:bg-white print:py-0">
       {/* Floating toolbar — hidden in print */}
@@ -69,19 +51,14 @@ function ResumePage() {
           >
             <Printer className="h-4 w-4" /> Print
           </button>
-          <button
-            type="button"
-            onClick={handleDownload}
-            disabled={loading}
-            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 disabled:opacity-60"
+          <a
+            href={resumePdf.url}
+            download="Yelleti-Harshavardhan-Resume.pdf"
+            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
           >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
-            {loading ? "Generating…" : "Download PDF"}
-          </button>
+            <Download className="h-4 w-4" />
+            Download PDF
+          </a>
         </div>
       </div>
 
