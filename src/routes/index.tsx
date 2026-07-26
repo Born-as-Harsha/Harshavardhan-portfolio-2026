@@ -29,7 +29,6 @@ import {
   FileCode2,
   Star,
   Download,
-  Loader2,
 } from "lucide-react";
 import portrait from "@/assets/harsha-portrait.png.asset.json";
 import resumePdf from "@/assets/harsha-resume.pdf.asset.json";
@@ -44,7 +43,6 @@ import {
   CODING,
   ACHIEVEMENTS,
   CORE_COURSES,
-  buildResumeData,
 } from "@/lib/resume-data";
 
 export const Route = createFileRoute("/")({
