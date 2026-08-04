@@ -928,8 +928,26 @@ function Certifications() {
               </div>
               <div className="mt-3 space-y-2">
                 {c.items.map((i) => (
-                  <div key={i.name} className="text-sm font-semibold text-foreground/90">
-                    {i.name}
+                  <div key={i.name}>
+                    <div className="text-sm font-semibold text-foreground/90">{i.name}</div>
+                    {(i.credentialId || i.issueDate) && (
+                      <dl className="mt-1.5 space-y-0.5 font-mono text-[10px] text-muted-foreground">
+                        {i.credentialId && (
+                          <div className="flex gap-1.5">
+                            <dt>ID:</dt>
+                            <dd className="break-all">{i.credentialId}</dd>
+                          </div>
+                        )}
+                        {i.issueDate && (
+                          <div className="flex gap-1.5">
+                            <dt>Issued:</dt>
+                            <dd>
+                              <time dateTime={i.issueDate}>{i.issueDate}</time>
+                            </dd>
+                          </div>
+                        )}
+                      </dl>
+                    )}
                   </div>
                 ))}
               </div>
@@ -940,7 +958,8 @@ function Certifications() {
                   href={c.items[0].url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                  aria-label={`Verify credential: ${c.items[0].name} from ${c.issuer}`}
+                  className="inline-flex items-center gap-1.5 rounded-full text-xs font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   Verify Credential <ExternalLink className="h-3 w-3" />
                 </a>
