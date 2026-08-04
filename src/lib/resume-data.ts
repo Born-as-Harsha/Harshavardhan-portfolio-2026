@@ -5,6 +5,7 @@ import siemensCert from "@/assets/certs/eduskills-siemens.jpg.asset.json";
 import tarasCert from "@/assets/certs/taras-ai-ml.pdf.asset.json";
 import linuxCert from "@/assets/certs/linux-foundation.pdf.asset.json";
 import ciscoCert from "@/assets/certs/cisco-packet-tracer.pdf.asset.json";
+import amdoxCert from "@/assets/certs/amdox-internship.pdf.asset.json";
 
 /** Relative paths render identically on SSR and client (no hydration mismatch).
  *  PDF generation absolutizes them at click-time via `buildResumeData()`. */
@@ -15,6 +16,7 @@ export const CERT_SOURCES = {
   taras: tarasCert.url,
   linux: linuxCert.url,
   cisco: ciscoCert.url,
+  amdox: amdoxCert.url,
   coursera: "https://www.coursera.org/learner/harshavardhan-yelleti",
 } as const;
 
@@ -267,8 +269,26 @@ export const RESEARCH = [
   },
 ];
 
-export type CertItem = { name: string; url?: string };
+export type CertItem = {
+  name: string;
+  url?: string;
+  issueDate?: string;
+  credentialId?: string;
+  issuerUrl?: string;
+};
 export const CERTIFICATIONS: { issuer: string; items: CertItem[] }[] = [
+  {
+    issuer: "AMDOX",
+    items: [
+      {
+        name: "Certificate of Internship — Web Development",
+        url: CERT_SOURCES.amdox,
+        issueDate: "2026-07-30",
+        credentialId: "adx/MDWS3tAsmv",
+        issuerUrl: "https://www.amdox.in",
+      },
+    ],
+  },
   {
     issuer: "Sense Semiconductor (SSIT)",
     items: [{ name: "FPGA & VLSI Design Internship Certificate", url: CERT_SOURCES.ssit }],
