@@ -30,7 +30,7 @@ import {
   Star,
   Download,
 } from "lucide-react";
-import portrait from "@/assets/harsha-portrait.png.asset.json";
+import portrait from "@/assets/harsha-id.jpg.asset.json";
 import resumePdf from "@/assets/harsha-resume.pdf.asset.json";
 import {
   PROFILE,
@@ -69,6 +69,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="relative min-h-screen overflow-x-clip text-foreground">
+      <CredentialJsonLd />
       <Nav />
       <main>
         <Hero />
@@ -90,6 +91,38 @@ function Index() {
 }
 
 const iconMap = { Trophy, Award, Star, BookOpen, Sparkles, Zap };
+
+function CredentialJsonLd() {
+  const credentials = CERTIFICATIONS.flatMap((c) =>
+    c.items.map((i) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: i.name,
+      ...(i.credentialId ? { identifier: i.credentialId } : {}),
+      ...(i.issueDate ? { dateCreated: i.issueDate } : {}),
+      ...(i.url ? { url: i.url } : {}),
+      recognizedBy: {
+        "@type": "Organization",
+        name: c.issuer,
+        ...(i.issuerUrl ? { url: i.issuerUrl } : {}),
+      },
+      credentialCategory: "certificate",
+    })),
+  );
+  const json = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: PROFILE.name,
+    jobTitle: PROFILE.title,
+    email: `mailto:${PROFILE.email}`,
+    alumniOf: { "@type": "CollegeOrUniversity", name: PROFILE.university },
+    sameAs: [PROFILE.github, PROFILE.linkedin, PROFILE.orcid, PROFILE.scholar],
+    hasCredential: credentials,
+  };
+  return (
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }} />
+  );
+}
+
 const skillIconMap = { Microchip, CircuitBoard, Cpu, Layers, Terminal, BrainCircuit, FileCode2 };
 const projectIconMap = { Cpu, Radio, Binary, Microchip, FileCode2, BrainCircuit };
 
@@ -116,6 +149,8 @@ function Nav() {
     ["Projects", "#projects"],
     ["Research", "#research"],
     ["Experience", "#experience"],
+    ["Certifications", "#certs"],
+    ["Platforms", "#coding"],
     ["Contact", "#contact"],
   ];
   return (
@@ -129,12 +164,12 @@ function Nav() {
             Harsha<span className="text-primary">.</span>
           </span>
         </a>
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-1 lg:flex">
           {items.map(([label, href]) => (
             <li key={href}>
               <a
                 href={href}
-                className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+                className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {label}
               </a>
@@ -324,8 +359,10 @@ function Hero() {
                         <img
                           src={portrait.url}
                           alt="Yelleti Harshavardhan"
-                          className="h-full w-full object-cover object-[center_20%]"
+                          className="h-full w-full object-cover object-center"
                           loading="eager"
+                          width={400}
+                          height={400}
                         />
                       </div>
                     </div>
@@ -890,8 +927,26 @@ function Certifications() {
               </div>
               <div className="mt-3 space-y-2">
                 {c.items.map((i) => (
-                  <div key={i.name} className="text-sm font-semibold text-foreground/90">
-                    {i.name}
+                  <div key={i.name}>
+                    <div className="text-sm font-semibold text-foreground/90">{i.name}</div>
+                    {(i.credentialId || i.issueDate) && (
+                      <dl className="mt-1.5 space-y-0.5 font-mono text-[10px] text-muted-foreground">
+                        {i.credentialId && (
+                          <div className="flex gap-1.5">
+                            <dt>ID:</dt>
+                            <dd className="break-all">{i.credentialId}</dd>
+                          </div>
+                        )}
+                        {i.issueDate && (
+                          <div className="flex gap-1.5">
+                            <dt>Issued:</dt>
+                            <dd>
+                              <time dateTime={i.issueDate}>{i.issueDate}</time>
+                            </dd>
+                          </div>
+                        )}
+                      </dl>
+                    )}
                   </div>
                 ))}
               </div>
@@ -902,7 +957,8 @@ function Certifications() {
                   href={c.items[0].url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                  aria-label={`Verify credential: ${c.items[0].name} from ${c.issuer}`}
+                  className="inline-flex items-center gap-1.5 rounded-full text-xs font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   Verify Credential <ExternalLink className="h-3 w-3" />
                 </a>
