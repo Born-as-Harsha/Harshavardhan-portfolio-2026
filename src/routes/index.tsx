@@ -30,7 +30,7 @@ import {
   Star,
   Download,
 } from "lucide-react";
-import portrait from "@/assets/harsha-portrait.png.asset.json";
+import portrait from "@/assets/harsha-id.jpg.asset.json";
 import resumePdf from "@/assets/harsha-resume.pdf.asset.json";
 import {
   PROFILE,
@@ -69,6 +69,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="relative min-h-screen overflow-x-clip text-foreground">
+      <CredentialJsonLd />
       <Nav />
       <main>
         <Hero />
@@ -90,6 +91,41 @@ function Index() {
 }
 
 const iconMap = { Trophy, Award, Star, BookOpen, Sparkles, Zap };
+
+function CredentialJsonLd() {
+  const credentials = CERTIFICATIONS.flatMap((c) =>
+    c.items.map((i) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: i.name,
+      ...(i.credentialId ? { identifier: i.credentialId } : {}),
+      ...(i.issueDate ? { dateCreated: i.issueDate } : {}),
+      ...(i.url ? { url: i.url } : {}),
+      recognizedBy: {
+        "@type": "Organization",
+        name: c.issuer,
+        ...(i.issuerUrl ? { url: i.issuerUrl } : {}),
+      },
+      credentialCategory: "certificate",
+    })),
+  );
+  const json = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: PROFILE.name,
+    jobTitle: PROFILE.title,
+    email: `mailto:${PROFILE.email}`,
+    alumniOf: { "@type": "CollegeOrUniversity", name: PROFILE.university },
+    sameAs: [PROFILE.github, PROFILE.linkedin, PROFILE.orcid, PROFILE.scholar],
+    hasCredential: credentials,
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }}
+    />
+  );
+}
+
 const skillIconMap = { Microchip, CircuitBoard, Cpu, Layers, Terminal, BrainCircuit, FileCode2 };
 const projectIconMap = { Cpu, Radio, Binary, Microchip, FileCode2, BrainCircuit };
 
@@ -116,6 +152,8 @@ function Nav() {
     ["Projects", "#projects"],
     ["Research", "#research"],
     ["Experience", "#experience"],
+    ["Certifications", "#certs"],
+    ["Platforms", "#coding"],
     ["Contact", "#contact"],
   ];
   return (
@@ -129,12 +167,12 @@ function Nav() {
             Harsha<span className="text-primary">.</span>
           </span>
         </a>
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-1 lg:flex">
           {items.map(([label, href]) => (
             <li key={href}>
               <a
                 href={href}
-                className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+                className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {label}
               </a>
