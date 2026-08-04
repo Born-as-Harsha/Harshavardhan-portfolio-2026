@@ -362,8 +362,10 @@ function Hero() {
                         <img
                           src={portrait.url}
                           alt="Yelleti Harshavardhan"
-                          className="h-full w-full object-cover object-[center_20%]"
+                          className="h-full w-full object-cover object-center"
                           loading="eager"
+                          width={400}
+                          height={400}
                         />
                       </div>
                     </div>
