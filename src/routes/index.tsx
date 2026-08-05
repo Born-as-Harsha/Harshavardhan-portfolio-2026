@@ -44,6 +44,7 @@ import {
   ACHIEVEMENTS,
   CORE_COURSES,
 } from "@/lib/resume-data";
+import { slugify } from "@/lib/resume-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -952,16 +953,15 @@ function Certifications() {
               </div>
             </div>
             <div className="mt-6">
-              {c.items[0]?.url && (
-                <a
-                  href={c.items[0].url}
-                  target="_blank"
-                  rel="noreferrer"
+              {c.items[0] && (
+                <Link
+                  to="/certifications/$credentialId"
+                  params={{ credentialId: slugify(c.items[0].credentialId ?? `${c.issuer}-${c.items[0].name}`) }}
                   aria-label={`Verify credential: ${c.items[0].name} from ${c.issuer}`}
                   className="inline-flex items-center gap-1.5 rounded-full text-xs font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   Verify Credential <ExternalLink className="h-3 w-3" />
-                </a>
+                </Link>
               )}
             </div>
           </motion.div>
