@@ -1,6 +1,20 @@
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Download, ExternalLink, ShieldCheck } from "lucide-react";
-import { getCredential, PROFILE, type CredentialRecord } from "@/lib/resume-data";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Download,
+  ExternalLink,
+  FileText,
+  Loader2,
+  ShieldCheck,
+} from "lucide-react";
+import {
+  formatFileSize,
+  getCredential,
+  PROFILE,
+  type CredentialRecord,
+} from "@/lib/resume-data";
 
 export const Route = createFileRoute("/certifications/$credentialId")({
   loader: ({ params }) => {
@@ -90,9 +104,94 @@ function CredentialNotFound() {
   );
 }
 
+function PdfPreview({ credential, fileName }: { credential: CredentialRecord; fileName: string }) {
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    // <object> fires no reliable error event for PDFs; treat a slow load as a failure.
+    timer.current = setTimeout(() => setStatus((s) => (s === "loading" ? "error" : s)), 8000);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
+  return (
+    <div className="mt-8">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+          <FileText className="h-3.5 w-3.5" /> Certificate preview
+        </h2>
+        {status === "loading" && (
+          <span className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
+            <Loader2 className="h-3 w-3 animate-spin" /> Loading…
+          </span>
+        )}
+      </div>
+
+      <div className="relative mt-3 overflow-hidden rounded-2xl border border-border bg-muted">
+        {status === "error" ? (
+          <div className="flex flex-col items-center gap-3 px-6 py-14 text-center">
+            <AlertTriangle className="h-6 w-6 text-amber-400" aria-hidden />
+            <p className="text-sm font-semibold text-foreground/90">Preview unavailable</p>
+            <p className="max-w-sm text-xs text-muted-foreground">
+              This browser couldn’t display the PDF inline. Download the file or open the original
+              to verify the credential.
+            </p>
+            <a
+              href={credential.url}
+              download={fileName}
+              className="mt-1 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold text-foreground/90 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <Download className="h-3.5 w-3.5" /> Download instead
+            </a>
+          </div>
+        ) : (
+          <>
+            {status === "loading" && (
+              <div
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-muted"
+                role="status"
+                aria-live="polite"
+              >
+                <Loader2 className="h-5 w-5 animate-spin text-primary" aria-hidden />
+                <p className="text-xs text-muted-foreground">Loading certificate preview…</p>
+              </div>
+            )}
+            <object
+              data={credential.url}
+              type="application/pdf"
+              onLoad={() => setStatus("ready")}
+              onError={() => setStatus("error")}
+              className="h-[60vh] w-full"
+              aria-label={`${credential.name} certificate PDF`}
+            >
+              <div className="p-6 text-sm text-muted-foreground">
+                Your browser can’t display PDFs inline. Use the download button above.
+              </div>
+            </object>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function CredentialPage() {
   const { credential } = Route.useLoaderData();
   const fileName = `${credential.slug}.pdf`;
+  const fileMeta = [
+    credential.fileSize ? formatFileSize(credential.fileSize) : null,
+    credential.fileUpdatedAt
+      ? `updated ${new Date(credential.fileUpdatedAt).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
   return (
     <Shell>
       <CredentialJsonLd credential={credential} />
@@ -146,14 +245,25 @@ function CredentialPage() {
         </dl>
 
         {credential.url && (
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             {credential.isPdf ? (
               <a
                 href={credential.url}
                 download={fileName}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label={`Download ${credential.name} certificate as PDF${
+                  fileMeta ? ` (${fileMeta})` : ""
+                }`}
+                className="inline-flex items-center gap-2.5 rounded-full bg-primary px-5 py-3 text-xs font-semibold text-primary-foreground hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                <Download className="h-4 w-4" /> Download PDF
+                <Download className="h-4 w-4" aria-hidden />
+                <span className="text-left leading-tight">
+                  Download certificate (PDF)
+                  {fileMeta && (
+                    <span className="block font-mono text-[10px] font-normal opacity-80">
+                      {fileMeta}
+                    </span>
+                  )}
+                </span>
               </a>
             ) : null}
             <a
@@ -168,16 +278,7 @@ function CredentialPage() {
         )}
 
         {credential.isPdf && credential.url && (
-          <object
-            data={credential.url}
-            type="application/pdf"
-            className="mt-8 h-[60vh] w-full rounded-2xl border border-border bg-muted"
-            aria-label={`${credential.name} certificate PDF`}
-          >
-            <p className="p-4 text-sm text-muted-foreground">
-              Your browser can’t display PDFs inline. Use the download button above.
-            </p>
-          </object>
+          <PdfPreview credential={credential} fileName={fileName} />
         )}
       </article>
     </Shell>
