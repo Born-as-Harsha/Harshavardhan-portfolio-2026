@@ -354,10 +354,6 @@ export const CORE_COURSES = [
 ];
 
 export function buildResumeData(): ResumeData {
-  return buildResumeDataInner();
-}
-
-function buildResumeDataInner(): ResumeData {
   return {
     name: PROFILE.name,
     title: PROFILE.title,
