@@ -44,6 +44,7 @@ import {
   ACHIEVEMENTS,
   CORE_COURSES,
 } from "@/lib/resume-data";
+import { slugify } from "@/lib/resume-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
