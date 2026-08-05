@@ -20,6 +20,19 @@ export const CERT_SOURCES = {
   coursera: "https://www.coursera.org/learner/harshavardhan-yelleti",
 } as const;
 
+/** url -> file metadata from the CDN asset pointers (size in bytes, upload date). */
+const CERT_FILE_META: Record<string, { size: number; updatedAt: string }> = Object.fromEntries(
+  [ssitCert, ijirtCert, siemensCert, tarasCert, linuxCert, ciscoCert, amdoxCert].map((a) => [
+    a.url,
+    { size: a.size, updatedAt: a.created_at },
+  ]),
+);
+
+export const formatFileSize = (bytes: number) =>
+  bytes >= 1024 * 1024
+    ? `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+    : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+
 const absolutize = (url?: string) => {
   if (!url) return url;
   if (/^https?:\/\//i.test(url)) return url;
@@ -327,7 +340,13 @@ export const CODING = [
 ];
 
 /** Flattened, URL-addressable credential records for /certifications/$credentialId */
-export type CredentialRecord = CertItem & { issuer: string; slug: string; isPdf: boolean };
+export type CredentialRecord = CertItem & {
+  issuer: string;
+  slug: string;
+  isPdf: boolean;
+  fileSize?: number;
+  fileUpdatedAt?: string;
+};
 
 export const slugify = (s: string) =>
   s
@@ -341,6 +360,8 @@ export const CREDENTIALS: CredentialRecord[] = CERTIFICATIONS.flatMap((c) =>
     issuer: c.issuer,
     slug: slugify(i.credentialId ?? `${c.issuer}-${i.name}`),
     isPdf: !!i.url && /\.pdf($|\?)/i.test(i.url),
+    fileSize: i.url ? CERT_FILE_META[i.url]?.size : undefined,
+    fileUpdatedAt: i.url ? CERT_FILE_META[i.url]?.updatedAt : undefined,
   })),
 );
 
