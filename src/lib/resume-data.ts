@@ -326,6 +326,27 @@ export const CODING = [
   { name: "Codeforces", handle: "2400040454", url: PROFILE.codeforces },
 ];
 
+/** Flattened, URL-addressable credential records for /certifications/$credentialId */
+export type CredentialRecord = CertItem & { issuer: string; slug: string; isPdf: boolean };
+
+export const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+export const CREDENTIALS: CredentialRecord[] = CERTIFICATIONS.flatMap((c) =>
+  c.items.map((i) => ({
+    ...i,
+    issuer: c.issuer,
+    slug: slugify(i.credentialId ?? `${c.issuer}-${i.name}`),
+    isPdf: !!i.url && /\.pdf($|\?)/i.test(i.url),
+  })),
+);
+
+export const getCredential = (slug: string) =>
+  CREDENTIALS.find((c) => c.slug === slug.toLowerCase());
+
 export const ACHIEVEMENTS = [
   { icon: "Trophy", title: "CGPA 9.68 / 10", note: "Top of class, second-year ECE" },
   { icon: "Award", title: "Smart India Hackathon", note: "Participant" },
