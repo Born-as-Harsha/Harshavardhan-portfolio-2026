@@ -320,7 +320,6 @@ export const CERTIFICATIONS: { issuer: string; items: CertItem[] }[] = [
 ];
 
 export const CODING = [
-
   { name: "LeetCode", handle: "kl2400040454", url: PROFILE.leetcode },
   { name: "CodeChef", handle: "klu2400040454 · 3-Star", url: PROFILE.codechef },
   { name: "HackerRank", handle: "kl2400040454", url: PROFILE.hackerrank },
