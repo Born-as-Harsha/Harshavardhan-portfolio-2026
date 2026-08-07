@@ -16,7 +16,7 @@ function ProgressBar({ percent }: { percent: number | null }) {
       <div
         className={
           percent === null
-            ? "h-full w-1/3 animate-[shimmer_1.2s_ease-in-out_infinite] rounded-full bg-primary"
+            ? "h-full w-1/3 animate-[indeterminate_1.2s_ease-in-out_infinite] rounded-full bg-primary"
             : "h-full rounded-full bg-primary transition-[width] duration-200"
         }
         style={percent === null ? undefined : { width: `${percent}%` }}
