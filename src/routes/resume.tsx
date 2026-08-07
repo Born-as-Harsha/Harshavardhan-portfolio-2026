@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Download, Printer } from "lucide-react";
+import { ArrowLeft, Printer } from "lucide-react";
+import { PdfDownloadButton } from "@/components/credential-pdf";
 import {
   PROFILE,
   EDUCATION,
@@ -51,14 +52,11 @@ function ResumePage() {
           >
             <Printer className="h-4 w-4" /> Print
           </button>
-          <a
-            href={resumePdf.url}
-            download="Yelleti-Harshavardhan-Resume.pdf"
-            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
-          >
-            <Download className="h-4 w-4" />
-            Download PDF
-          </a>
+          <PdfDownloadButton
+            url={resumePdf.url}
+            fileName="Yelleti-Harshavardhan-Resume.pdf"
+            label="Download PDF"
+          />
         </div>
       </div>
 
