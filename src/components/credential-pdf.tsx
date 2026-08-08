@@ -2,6 +2,52 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AlertTriangle, Download, Eye, Loader2, RotateCcw, X } from "lucide-react";
 import { formatBytes, usePdfStream } from "@/lib/use-pdf-stream";
 import { PdfSkeleton } from "@/components/pdf-skeleton";
+import { nextAnnouncedStep, progressMessage } from "@/lib/a11y-progress";
+import { t } from "@/lib/i18n";
+
+/**
+ * Throttles progress announcements so screen readers hear start, each 10%
+ * step, and the terminal state instead of one message per chunk.
+ */
+function useProgressAnnouncement(input: {
+  label: string;
+  status: "idle" | "loading" | "ready" | "error" | "aborted";
+  percent: number | null;
+  receivedBytes: number;
+  error?: string | null;
+}) {
+  const { label, status, percent, receivedBytes, error } = input;
+  const lastStep = useRef<number | null>(null);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (status === "idle") {
+      lastStep.current = null;
+      setMessage("");
+      return;
+    }
+    if (status === "loading") {
+      const step = nextAnnouncedStep(lastStep.current, percent);
+      if (percent !== null && step === null) return;
+      lastStep.current = step;
+      setMessage(
+        progressMessage({
+          label,
+          status,
+          percent,
+          receivedLabel: formatBytes(receivedBytes),
+        }),
+      );
+      return;
+    }
+    lastStep.current = null;
+    setMessage(
+      progressMessage({ label, status, percent, receivedLabel: formatBytes(receivedBytes), error }),
+    );
+  }, [label, status, percent, receivedBytes, error]);
+
+  return message;
+}
 
 function track(event: string, data: Record<string, unknown>) {
   if (typeof window === "undefined") return;
@@ -42,9 +88,11 @@ export function PdfDownloadButton({
 }) {
   const stream = usePdfStream(url, {
     expectedBytes,
+    channel: "download",
     onTiming: (ms, bytes) => track("pdf_download", { url, ms: Math.round(ms), bytes }),
   });
   const [saved, setSaved] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   // Trigger the save once the bytes are in memory.
   useEffect(() => {
@@ -61,21 +109,20 @@ export function PdfDownloadButton({
   const loading = stream.status === "loading";
   const failed = stream.status === "error";
 
-  const status = loading
-    ? stream.percent === null
-      ? `Downloading ${label}, ${formatBytes(stream.receivedBytes)} received`
-      : `Downloading ${label}, ${stream.percent} percent complete`
-    : failed
-      ? `Download failed: ${stream.error ?? "unknown error"}. Use the retry button.`
-      : saved
-        ? `${label} downloaded`
-        : "";
+  const status = useProgressAnnouncement({
+    label,
+    status: stream.status,
+    percent: stream.percent,
+    receivedBytes: stream.receivedBytes,
+    error: stream.error,
+  });
 
   return (
     <div className="w-full max-w-sm">
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
+          ref={triggerRef}
           onClick={() => {
             setSaved(false);
             stream.reset();
@@ -108,10 +155,15 @@ export function PdfDownloadButton({
         {loading && (
           <button
             type="button"
-            onClick={stream.abort}
+            onClick={() => {
+              stream.abort();
+              // Return focus to the trigger so keyboard users aren't stranded
+              // on a control that is about to unmount.
+              triggerRef.current?.focus();
+            }}
             className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2.5 text-xs font-semibold text-foreground/90 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <X className="h-3.5 w-3.5" aria-hidden /> Cancel
+            <X className="h-3.5 w-3.5" aria-hidden /> {t("pdf.cancel")}
           </button>
         )}
       </div>
@@ -134,9 +186,13 @@ export function PdfDownloadButton({
         </div>
       )}
 
+      {stream.status === "aborted" && (
+        <p className="mt-2 text-xs text-muted-foreground">{t("pdf.canceled")}</p>
+      )}
+
       {failed && (
         <p className="mt-2 text-xs text-amber-400">
-          Couldn’t download the file. Check your connection and retry.
+          {t("pdf.failed")}
         </p>
       )}
 
@@ -169,6 +225,7 @@ export function PdfPreviewPane({
 }) {
   const stream = usePdfStream(url, {
     expectedBytes,
+    channel: "preview",
     onTiming: (ms, bytes) => track("pdf_preview", { url, ms: Math.round(ms), bytes }),
   });
   const hovered = useRef(false);
