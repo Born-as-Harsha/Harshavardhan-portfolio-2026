@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { startTrace, type TelemetryChannel, type Trace } from "@/lib/telemetry";
 
 export type PdfStreamStatus = "idle" | "loading" | "ready" | "error" | "aborted";
 
@@ -31,6 +32,8 @@ type Options = {
   /** Known size from asset metadata, used when the response omits content-length. */
   expectedBytes?: number;
   onTiming?: (ms: number, bytes: number) => void;
+  /** Telemetry channel this stream belongs to. */
+  channel?: TelemetryChannel;
 };
 
 /**
@@ -39,10 +42,12 @@ type Options = {
  * degrades to indeterminate progress when the total size is unknown.
  */
 export function usePdfStream(url: string | undefined, options: Options = {}) {
-  const { expectedBytes, onTiming } = options;
+  const { expectedBytes, onTiming, channel = "download" } = options;
   const [state, setState] = useState<PdfStreamState>(INITIAL);
   const controllerRef = useRef<AbortController | null>(null);
   const urlRef = useRef<string | null>(null);
+  const traceRef = useRef<Trace | null>(null);
+  const receivedRef = useRef(0);
 
   const revoke = useCallback(() => {
     if (urlRef.current) {
@@ -60,8 +65,12 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
   );
 
   const abort = useCallback(() => {
-    controllerRef.current?.abort();
-    controllerRef.current = null;
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+      controllerRef.current = null;
+      traceRef.current?.cancel(receivedRef.current);
+      traceRef.current = null;
+    }
     setState((s) => (s.status === "loading" ? { ...INITIAL, status: "aborted" } : s));
   }, []);
 
@@ -72,6 +81,9 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
     const controller = new AbortController();
     controllerRef.current = controller;
     const startedAt = typeof performance !== "undefined" ? performance.now() : Date.now();
+    const trace: Trace = startTrace(channel, url);
+    traceRef.current = trace;
+    receivedRef.current = 0;
 
     setState({ ...INITIAL, status: "loading", totalBytes: expectedBytes ?? null });
 
@@ -94,6 +106,8 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
           if (value) {
             chunks.push(value);
             received += value.byteLength;
+            receivedRef.current = received;
+            trace.chunk(value.byteLength, received, total);
             setState((s) => ({
               ...s,
               receivedBytes: received,
@@ -103,8 +117,12 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
           }
         }
         blob = new Blob(chunks as BlobPart[], { type: "application/pdf" });
+        trace.lastByte(received);
       } else {
         blob = await res.blob();
+        receivedRef.current = blob.size;
+        trace.chunk(blob.size, blob.size, total);
+        trace.lastByte(blob.size);
         setState((s) => ({ ...s, receivedBytes: blob.size, totalBytes: blob.size, percent: 100 }));
       }
 
@@ -113,6 +131,8 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
       controllerRef.current = null;
       const now = typeof performance !== "undefined" ? performance.now() : Date.now();
       onTiming?.(now - startedAt, blob.size);
+      trace.complete(blob.size);
+      traceRef.current = null;
       setState({
         status: "ready",
         percent: 100,
@@ -124,16 +144,20 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
     } catch (err) {
       controllerRef.current = null;
       if (err instanceof DOMException && err.name === "AbortError") {
+        trace.cancel(receivedRef.current);
+        traceRef.current = null;
         setState({ ...INITIAL, status: "aborted" });
         return;
       }
+      trace.error(err instanceof Error ? err.message : "Unknown error", receivedRef.current);
+      traceRef.current = null;
       setState({
         ...INITIAL,
         status: "error",
         error: err instanceof Error ? err.message : "Unknown error",
       });
     }
-  }, [url, expectedBytes, onTiming]);
+  }, [url, expectedBytes, onTiming, channel]);
 
   const reset = useCallback(() => {
     controllerRef.current?.abort();
