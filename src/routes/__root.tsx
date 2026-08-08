@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { TelemetryPanel } from "@/components/telemetry-panel";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
