@@ -40,16 +40,15 @@ function Row({ e }: { e: TelemetryEvent }) {
  * Opt-in, non-blocking debug panel. Enabled via `?debug=1`, a localStorage
  * flag, or dev builds. Renders nothing in production unless explicitly on.
  */
+const EMPTY: TelemetryEvent[] = [];
+const emptyEvents = () => EMPTY;
+
 export function TelemetryPanel() {
   const [enabled, setEnabled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => setEnabled(telemetryPanelEnabled()), []);
 
-  const events = useSyncExternalStore(
-    telemetry.subscribe,
-    telemetry.getSnapshot,
-    () => [] as TelemetryEvent[],
-  );
+  const events = useSyncExternalStore(telemetry.subscribe, telemetry.getSnapshot, emptyEvents);
 
   if (!enabled) return null;
 
