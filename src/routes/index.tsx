@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -537,7 +538,7 @@ function About() {
           className="glass rounded-3xl p-8 lg:col-span-2"
         >
           <p className="text-lg leading-relaxed text-foreground/90">
-            I'm a motivated second-year B.Tech ECE student at{" "}
+            {t("about.yearStatus")} I'm a motivated B.Tech ECE student at{" "}
             <span className="text-primary">{PROFILE.university}</span> with a CGPA of{" "}
             <span className="text-primary font-semibold">{PROFILE.cgpa}</span>, preparing for a
             career in <span className="font-semibold">VLSI and Semiconductor Engineering</span>.

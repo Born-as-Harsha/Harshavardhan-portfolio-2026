@@ -369,7 +369,7 @@ export const getCredential = (slug: string) =>
   CREDENTIALS.find((c) => c.slug === slug.toLowerCase());
 
 export const ACHIEVEMENTS = [
-  { icon: "Trophy", title: "CGPA 9.68 / 10", note: "Top of class, second-year ECE" },
+  { icon: "Trophy", title: "CGPA 9.68 / 10", note: "Top of class, ECE" },
   { icon: "Award", title: "Smart India Hackathon", note: "Participant" },
   { icon: "Star", title: "CodeChef 3-Star", note: "Active competitive programmer" },
   { icon: "BookOpen", title: "ORCID Researcher", note: "Active research profile" },
