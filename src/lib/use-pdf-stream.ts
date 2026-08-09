@@ -100,8 +100,8 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
   }, []);
 
   const attempt = useCallback(async (): Promise<boolean> => {
-    if (!url) return;
-    if (urlRef.current) return; // already cached in memory
+    if (!url) return true;
+    if (urlRef.current) return true; // already cached in memory
     controllerRef.current?.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
