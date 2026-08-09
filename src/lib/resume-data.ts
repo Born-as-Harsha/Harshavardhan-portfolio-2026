@@ -49,7 +49,7 @@ export const PROFILE = {
   title: "VLSI & Semiconductor Engineer in the making",
   university: "Koneru Lakshmaiah Education Foundation (KLEF University)",
   degree: "B.Tech — Electronics & Communication Engineering",
-  year: "Second Year",
+  year: "Third Year",
   cgpa: "9.68 / 10",
   email: "abhiharsha021@gmail.com",
   phone: "+91 79014 46220",
@@ -77,7 +77,7 @@ export const ROLES = [
 export const EDUCATION = [
   {
     degree: "B.Tech — Electronics & Communication Engineering",
-    period: "2024 – 2026 (Second Year)",
+    period: "2024 – 2028 (Third Year)",
     org: PROFILE.university,
     detail: `CGPA ${PROFILE.cgpa}`,
   },
