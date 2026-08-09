@@ -1,11 +1,13 @@
 import type { ResumeData } from "./generate-resume-pdf";
-import ssitCert from "@/assets/certs/ssit-fpga-vlsi.jpg.asset.json";
-import ijirtCert from "@/assets/certs/ijirt-reviewer.jpg.asset.json";
-import siemensCert from "@/assets/certs/eduskills-siemens.jpg.asset.json";
+import ssitCert from "@/assets/certs/ssit-fpga-vlsi.pdf.asset.json";
+import ijirtCert from "@/assets/certs/ijirt-reviewer.pdf.asset.json";
+import siemensCert from "@/assets/certs/eduskills-siemens.pdf.asset.json";
+import courseraCert from "@/assets/certs/coursera-python-for-everybody.pdf.asset.json";
 import tarasCert from "@/assets/certs/taras-ai-ml.pdf.asset.json";
 import linuxCert from "@/assets/certs/linux-foundation.pdf.asset.json";
 import ciscoCert from "@/assets/certs/cisco-packet-tracer.pdf.asset.json";
 import amdoxCert from "@/assets/certs/amdox-internship.pdf.asset.json";
+import "./cert-manifest";
 
 /** Relative paths render identically on SSR and client (no hydration mismatch).
  *  PDF generation absolutizes them at click-time via `buildResumeData()`. */
@@ -17,12 +19,12 @@ export const CERT_SOURCES = {
   linux: linuxCert.url,
   cisco: ciscoCert.url,
   amdox: amdoxCert.url,
-  coursera: "https://www.coursera.org/learner/harshavardhan-yelleti",
+  coursera: courseraCert.url,
 } as const;
 
 /** url -> file metadata from the CDN asset pointers (size in bytes, upload date). */
 const CERT_FILE_META: Record<string, { size: number; updatedAt: string }> = Object.fromEntries(
-  [ssitCert, ijirtCert, siemensCert, tarasCert, linuxCert, ciscoCert, amdoxCert].map((a) => [
+  [ssitCert, ijirtCert, siemensCert, courseraCert, tarasCert, linuxCert, ciscoCert, amdoxCert].map((a) => [
     a.url,
     { size: a.size, updatedAt: a.created_at },
   ]),
