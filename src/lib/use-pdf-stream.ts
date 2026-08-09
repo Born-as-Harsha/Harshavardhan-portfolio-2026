@@ -182,7 +182,7 @@ export function usePdfStream(url: string | undefined, options: Options = {}) {
       traceRef.current = null;
       return false;
     }
-  }, [url, expectedBytes, onTiming, channel]) as () => Promise<boolean | undefined>;
+  }, [url, expectedBytes, onTiming, channel]);
 
   /**
    * Runs the request, then retries on failure with exponential backoff +
