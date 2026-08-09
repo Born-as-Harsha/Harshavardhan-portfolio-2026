@@ -5,6 +5,9 @@ import { PdfSkeleton } from "@/components/pdf-skeleton";
 import { nextAnnouncedStep, progressMessage } from "@/lib/a11y-progress";
 import { t } from "@/lib/i18n";
 
+/** Automatic inline-preview retries before falling back to download-only. */
+export const PREVIEW_MAX_RETRIES = 2;
+
 /**
  * Throttles progress announcements so screen readers hear start, each 10%
  * step, and the terminal state instead of one message per chunk.
@@ -226,6 +229,7 @@ export function PdfPreviewPane({
   const stream = usePdfStream(url, {
     expectedBytes,
     channel: "preview",
+    maxRetries: PREVIEW_MAX_RETRIES,
     onTiming: (ms, bytes) => track("pdf_preview", { url, ms: Math.round(ms), bytes }),
   });
   const hovered = useRef(false);
@@ -244,7 +248,8 @@ export function PdfPreviewPane({
     hovered.current = false;
   }, []);
 
-  const { status, percent, receivedBytes, totalBytes, objectUrl, error, start, reset } = stream;
+  const { status, percent, receivedBytes, totalBytes, objectUrl, error, start, reset, attempts, exhausted } =
+    stream;
 
   return (
     <div className="mt-8">
@@ -293,8 +298,15 @@ export function PdfPreviewPane({
         ) : status === "error" ? (
           <div className="flex h-[60vh] flex-col items-center justify-center gap-3 px-6 text-center">
             <AlertTriangle className="h-6 w-6 text-amber-400" aria-hidden />
-            <p className="text-sm font-semibold text-foreground/90">Preview unavailable</p>
-            <p className="max-w-sm text-xs text-muted-foreground">{error}</p>
+            <p className="text-sm font-semibold text-foreground/90">
+              {exhausted ? t("preview.fallbackTitle") : "Preview unavailable"}
+            </p>
+            <p className="max-w-sm text-xs text-muted-foreground">
+              {exhausted ? t("preview.fallbackBody") : error}
+            </p>
+            <p className="font-mono text-[10px] text-muted-foreground">
+              {attempts} of {PREVIEW_MAX_RETRIES + 1} attempts failed
+            </p>
             <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
               <button
                 type="button"
