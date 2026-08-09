@@ -5,6 +5,9 @@ import { PdfSkeleton } from "@/components/pdf-skeleton";
 import { nextAnnouncedStep, progressMessage } from "@/lib/a11y-progress";
 import { t } from "@/lib/i18n";
 
+/** Automatic inline-preview retries before falling back to download-only. */
+export const PREVIEW_MAX_RETRIES = 2;
+
 /**
  * Throttles progress announcements so screen readers hear start, each 10%
  * step, and the terminal state instead of one message per chunk.
