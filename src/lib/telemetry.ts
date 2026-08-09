@@ -144,9 +144,14 @@ export type Trace = ReturnType<typeof startTrace>;
 
 const FLAG_KEY = "lv:telemetry-panel";
 
-/** Panel is opt-in: `?debug=1`, localStorage flag, or dev builds. */
+/**
+ * Dev-only convenience flag. Production exposure is NOT decided here — see
+ * `src/lib/debug-flag.ts`, which requires a backend-verified signed token.
+ * A query param alone can never turn the panel on in a production build.
+ */
 export function telemetryPanelEnabled(): boolean {
   if (typeof window === "undefined") return false;
+  if (!import.meta.env.DEV) return false;
   try {
     const param = new URLSearchParams(window.location.search).get("debug");
     if (param === "1") {
@@ -161,5 +166,82 @@ export function telemetryPanelEnabled(): boolean {
   } catch {
     /* storage blocked */
   }
-  return Boolean(import.meta.env.DEV);
+  return true;
+}
+
+/* ------------------------------------------------------------------- export */
+
+/** Hard ceiling for an exported file; oldest events are dropped first. */
+export const EXPORT_MAX_BYTES = 512 * 1024;
+
+export type TelemetryExport = {
+  schema: "lovable.pdf-telemetry/v1";
+  exportedAt: string;
+  sessionId: string;
+  userAgentFamily: string;
+  eventCount: number;
+  truncated: boolean;
+  events: TelemetryEvent[];
+};
+
+/** Coarse UA family only — no version, platform, or fingerprintable detail. */
+function userAgentFamily(): string {
+  if (typeof navigator === "undefined") return "unknown";
+  const ua = navigator.userAgent;
+  if (/edg\//i.test(ua)) return "edge";
+  if (/chrome|chromium/i.test(ua)) return "chromium";
+  if (/firefox/i.test(ua)) return "firefox";
+  if (/safari/i.test(ua)) return "safari";
+  return "other";
+}
+
+const EMAIL = /[\w.+-]+@[\w-]+\.[\w.]+/g;
+const URLISH = /\b(?:https?:\/\/|\/\/)\S+/gi;
+const LONG_TOKEN = /\b[A-Za-z0-9_-]{24,}\b/g;
+
+/** Strips anything that could carry PII or a credential out of free text. */
+export function redactMessage(message: string | undefined): string | undefined {
+  if (!message) return message;
+  return message
+    .replace(EMAIL, "[redacted-email]")
+    .replace(URLISH, "[redacted-url]")
+    .replace(LONG_TOKEN, "[redacted-token]")
+    .slice(0, 200);
+}
+
+export function redactEvent(e: TelemetryEvent): TelemetryEvent {
+  const out: TelemetryEvent = { ...e, resource: safeResourceName(e.resource) };
+  if (e.message !== undefined) out.message = redactMessage(e.message);
+  else delete out.message;
+  return out;
+}
+
+/** Builds the redacted, size-capped export payload for the current session. */
+export function buildTelemetryExport(
+  events: TelemetryEvent[] = telemetry.getSnapshot(),
+  maxBytes = EXPORT_MAX_BYTES,
+): TelemetryExport {
+  let kept = events.map(redactEvent);
+  let truncated = false;
+  const build = (list: TelemetryEvent[]): TelemetryExport => ({
+    schema: "lovable.pdf-telemetry/v1",
+    exportedAt: new Date().toISOString(),
+    sessionId: telemetry.sessionId,
+    userAgentFamily: userAgentFamily(),
+    eventCount: list.length,
+    truncated,
+    events: list,
+  });
+  let payload = build(kept);
+  while (kept.length > 0 && JSON.stringify(payload).length > maxBytes) {
+    // Drop oldest first: the tail is the most useful for diagnosing failures.
+    kept = kept.slice(Math.ceil(kept.length / 10) || 1);
+    truncated = true;
+    payload = build(kept);
+  }
+  return payload;
+}
+
+export function telemetryExportFileName(now = new Date()): string {
+  return `telemetry-${telemetry.sessionId}-${now.toISOString().replace(/[:.]/g, "-")}.json`;
 }
