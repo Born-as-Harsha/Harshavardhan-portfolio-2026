@@ -1,6 +1,12 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
-import { Activity, Trash2, X } from "lucide-react";
-import { telemetry, telemetryPanelEnabled, type TelemetryEvent } from "@/lib/telemetry";
+import { useState, useSyncExternalStore } from "react";
+import { Activity, Download, Trash2, X } from "lucide-react";
+import {
+  buildTelemetryExport,
+  telemetry,
+  telemetryExportFileName,
+  type TelemetryEvent,
+} from "@/lib/telemetry";
+import { useDebugPanelEnabled } from "@/lib/debug-flag";
 import { t } from "@/lib/i18n";
 import { formatBytes } from "@/lib/use-pdf-stream";
 
@@ -43,10 +49,23 @@ function Row({ e }: { e: TelemetryEvent }) {
 const EMPTY: TelemetryEvent[] = [];
 const emptyEvents = () => EMPTY;
 
+function exportSession() {
+  const payload = buildTelemetryExport();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = telemetryExportFileName();
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  // Release the blob on the next tick so Safari has time to start the save.
+  window.setTimeout(() => URL.revokeObjectURL(href), 1000);
+}
+
 export function TelemetryPanel() {
-  const [enabled, setEnabled] = useState(false);
   const [open, setOpen] = useState(false);
-  useEffect(() => setEnabled(telemetryPanelEnabled()), []);
+  const enabled = useDebugPanelEnabled();
 
   const events = useSyncExternalStore(telemetry.subscribe, telemetry.getSnapshot, emptyEvents);
 
@@ -64,6 +83,16 @@ export function TelemetryPanel() {
               {t("telemetry.title")} · {t("telemetry.session")} {telemetry.sessionId}
             </h2>
             <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={exportSession}
+                disabled={events.length === 0}
+                aria-label={t("telemetry.export")}
+                title={t("telemetry.export")}
+                className="rounded-full p-1.5 text-muted-foreground hover:text-foreground disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                <Download className="h-3.5 w-3.5" aria-hidden />
+              </button>
               <button
                 type="button"
                 onClick={() => telemetry.clear()}
