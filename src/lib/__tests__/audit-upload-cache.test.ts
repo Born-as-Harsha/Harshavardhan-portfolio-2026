@@ -34,7 +34,11 @@ describe("certificate upload validation", () => {
   });
   it("blocks a non-PDF", () => {
     const r = validateCertificateUpload({ bytes: new Uint8Array([1, 2, 3, 4, 5]), serverSha256: DIGEST });
-    expect(r).toMatchObject({ status: "mismatch", code: "E_SIZE" });
+    expect(r).toMatchObject({ status: "mismatch", code: "E_MIME" });
+  });
+  it("blocks an empty file on size", () => {
+    const r = validateCertificateUpload({ bytes: new Uint8Array(0), serverSha256: DIGEST });
+    expect(r).toMatchObject({ code: "E_SIZE" });
   });
   it("blocks a mismatching client digest", () => {
     const r = validateCertificateUpload({ bytes: pdf(), serverSha256: DIGEST, clientSha256: "b".repeat(64) });
