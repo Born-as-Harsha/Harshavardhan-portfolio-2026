@@ -27,6 +27,8 @@ export const AUDIT_RESOURCE_TYPES = [
 export const AUDIT_OUTCOMES = ["allow", "deny", "error"] as const;
 export type AuditOutcome = (typeof AUDIT_OUTCOMES)[number];
 
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
+
 export type AuditEvent = {
   id: number;
   occurred_at: string;
@@ -37,7 +39,7 @@ export type AuditEvent = {
   resource_type: string;
   resource_id: string | null;
   outcome: string;
-  context: Record<string, unknown>;
+  context: { [k: string]: JsonValue };
   prev_hash: string;
   row_hash: string;
 };
