@@ -83,7 +83,7 @@ export async function writeAuditEvent(event: AuditWrite): Promise<AuditWriteResu
     _actor_email: event.actorEmail ?? undefined,
     _actor_ip_hash: (await hashIp(event.ip)) ?? undefined,
     _resource_id: event.resourceId ?? undefined,
-    _context: redactContext(event.context ?? {}),
+    _context: redactContext(event.context ?? {}) as never,
   });
   if (error) throw new Error(`audit write failed: ${error.message}`);
   const row = data as unknown as { id: number; row_hash: string };
