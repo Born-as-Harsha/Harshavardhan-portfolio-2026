@@ -14,16 +14,187 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit_chain_head: {
+        Row: {
+          event_count: number
+          head_hash: string
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          event_count?: number
+          head_hash?: string
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          event_count?: number
+          head_hash?: string
+          id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      audit_events: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          actor_ip_hash: string | null
+          context: Json
+          id: number
+          occurred_at: string
+          outcome: string
+          prev_hash: string
+          resource_id: string | null
+          resource_type: string
+          row_hash: string
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_ip_hash?: string | null
+          context?: Json
+          id?: number
+          occurred_at?: string
+          outcome: string
+          prev_hash: string
+          resource_id?: string | null
+          resource_type: string
+          row_hash: string
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_ip_hash?: string | null
+          context?: Json
+          id?: number
+          occurred_at?: string
+          outcome?: string
+          prev_hash?: string
+          resource_id?: string | null
+          resource_type?: string
+          row_hash?: string
+        }
+        Relationships: []
+      }
+      certificate_artifacts: {
+        Row: {
+          asset_id: string
+          bytes: number
+          created_at: string
+          filename: string
+          sha256: string
+          visibility: string
+        }
+        Insert: {
+          asset_id: string
+          bytes: number
+          created_at?: string
+          filename: string
+          sha256: string
+          visibility?: string
+        }
+        Update: {
+          asset_id?: string
+          bytes?: number
+          created_at?: string
+          filename?: string
+          sha256?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      append_audit_event: {
+        Args: {
+          _action: string
+          _actor_email?: string
+          _actor_id?: string
+          _actor_ip_hash?: string
+          _context?: Json
+          _outcome: string
+          _resource_id?: string
+          _resource_type: string
+        }
+        Returns: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          actor_ip_hash: string | null
+          context: Json
+          id: number
+          occurred_at: string
+          outcome: string
+          prev_hash: string
+          resource_id: string | null
+          resource_type: string
+          row_hash: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "audit_events"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      audit_canonical: {
+        Args: {
+          _action: string
+          _actor_id: string
+          _context: Json
+          _occurred_at: string
+          _outcome: string
+          _resource_id: string
+          _resource_type: string
+        }
+        Returns: string
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      verify_audit_chain: {
+        Args: { _from_id?: number; _limit?: number }
+        Returns: {
+          checked: number
+          first_bad_id: number
+          ok: boolean
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +321,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
