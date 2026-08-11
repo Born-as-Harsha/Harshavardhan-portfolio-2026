@@ -16,6 +16,7 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as CertificationsCredentialIdRouteImport } from './routes/certifications.$credentialId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as ApiCertificatesAssetIdRouteImport } from './routes/api/certificates/$assetId'
 import { Route as ApiAdminAuditExportRouteImport } from './routes/api/admin/audit/export'
 import { Route as ApiAdminCertificatesValidateRouteImport } from './routes/api/admin/certificates/validate'
 
@@ -58,6 +59,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiCertificatesAssetIdRoute = ApiCertificatesAssetIdRouteImport.update({
+  id: '/api/certificates/$assetId',
+  path: '/api/certificates/$assetId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAdminAuditExportRoute = ApiAdminAuditExportRouteImport.update({
   id: '/api/admin/audit/export',
   path: '/api/admin/audit/export',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/certifications/$credentialId': typeof CertificationsCredentialIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/certificates/$assetId': typeof ApiCertificatesAssetIdRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
   '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/certifications/$credentialId': typeof CertificationsCredentialIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/certificates/$assetId': typeof ApiCertificatesAssetIdRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
   '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/certifications/$credentialId': typeof CertificationsCredentialIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/certificates/$assetId': typeof ApiCertificatesAssetIdRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
   '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/certifications/$credentialId'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/certificates/$assetId'
     | '/api/admin/audit/export'
     | '/api/admin/certificates/validate'
   fileRoutesByTo: FileRoutesByTo
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/certifications/$credentialId'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/certificates/$assetId'
     | '/api/admin/audit/export'
     | '/api/admin/certificates/validate'
   id:
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/certifications/$credentialId'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/certificates/$assetId'
     | '/api/admin/audit/export'
     | '/api/admin/certificates/validate'
   fileRoutesById: FileRoutesById
@@ -148,6 +160,7 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CertificationsCredentialIdRoute: typeof CertificationsCredentialIdRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiCertificatesAssetIdRoute: typeof ApiCertificatesAssetIdRoute
   ApiAdminAuditExportRoute: typeof ApiAdminAuditExportRoute
   ApiAdminCertificatesValidateRoute: typeof ApiAdminCertificatesValidateRoute
 }
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/certificates/$assetId': {
+      id: '/api/certificates/$assetId'
+      path: '/api/certificates/$assetId'
+      fullPath: '/api/certificates/$assetId'
+      preLoaderRoute: typeof ApiCertificatesAssetIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/admin/audit/export': {
       id: '/api/admin/audit/export'
       path: '/api/admin/audit/export'
@@ -229,6 +249,7 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   CertificationsCredentialIdRoute: CertificationsCredentialIdRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiCertificatesAssetIdRoute: ApiCertificatesAssetIdRoute,
   ApiAdminAuditExportRoute: ApiAdminAuditExportRoute,
   ApiAdminCertificatesValidateRoute: ApiAdminCertificatesValidateRoute,
 }
