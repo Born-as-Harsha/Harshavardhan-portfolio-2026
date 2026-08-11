@@ -22,32 +22,31 @@ export const verifyDebugToken = createServerFn({ method: "POST" })
   }))
   .handler(async ({ data }) => {
     const secret = process.env["DEBUG_PANEL_SECRET"];
-    const audit = (allowed: boolean, reason: string) => {
-      // eslint-disable-next-line no-console
-      console.info(
-        JSON.stringify({
-          audit: "debug_panel_access",
-          at: new Date().toISOString(),
-          allowed,
-          reason,
-          route: data.route,
-          tokenPrefix: data.token.slice(0, 10),
-        }),
-      );
+    const { tryWriteAuditEvent } = await import("./audit.server");
+    // Persisted to the tamper-evident audit log. The token itself is never
+    // stored — only a short non-reversible prefix for correlation.
+    const audit = async (allowed: boolean, reason: string) => {
+      await tryWriteAuditEvent({
+        action: "debug_gate.verify",
+        resourceType: "debug_panel",
+        outcome: allowed ? "allow" : "deny",
+        resourceId: data.route || null,
+        context: { reason, tokenPrefix: data.token.slice(0, 8) },
+      });
       return { allowed, reason };
     };
 
-    if (!secret) return audit(false, "gate_unconfigured");
+    if (!secret) return await audit(false, "gate_unconfigured");
 
     const [expRaw, sig] = data.token.split(".");
     const exp = Number(expRaw);
-    if (!expRaw || !sig || !Number.isFinite(exp)) return audit(false, "malformed_token");
-    if (exp * 1000 < Date.now()) return audit(false, "expired");
+    if (!expRaw || !sig || !Number.isFinite(exp)) return await audit(false, "malformed_token");
+    if (exp * 1000 < Date.now()) return await audit(false, "expired");
 
     const expected = createHmac("sha256", secret).update(expRaw).digest("hex");
     const a = Buffer.from(expected, "utf8");
     const b = Buffer.from(sig, "utf8");
-    if (a.length !== b.length || !timingSafeEqual(a, b)) return audit(false, "bad_signature");
+    if (a.length !== b.length || !timingSafeEqual(a, b)) return await audit(false, "bad_signature");
 
-    return audit(true, "ok");
+    return await audit(true, "ok");
   });

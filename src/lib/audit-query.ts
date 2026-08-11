@@ -110,3 +110,34 @@ export function filterFromSearchParams(params: URLSearchParams): AuditFilter {
 export function auditExportFileName(now = new Date()): string {
   return `audit-${now.toISOString().slice(0, 10)}.json.gz`;
 }
+
+/* ------------------------------------------------------------------ filter */
+
+/**
+ * Applies a validated filter to a PostgREST query builder.
+ *
+ * Values are passed through PostgREST's parameter encoding rather than string
+ * concatenation; the free-text term additionally strips the delimiters that
+ * carry meaning inside an `or(...)` expression so a crafted query cannot
+ * escape its filter clause.
+ */
+export function applyAuditFilter<T>(query: T, filter: AuditFilter): T {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let q = query as any;
+  if (filter.action?.length) q = q.in("action", filter.action);
+  if (filter.resourceType?.length) q = q.in("resource_type", filter.resourceType);
+  if (filter.outcome?.length) q = q.in("outcome", filter.outcome);
+  if (filter.from) q = q.gte("occurred_at", filter.from);
+  if (filter.to) q = q.lte("occurred_at", filter.to);
+  if (filter.q) {
+    const term = filter.q.replace(/[%,()\\*"']/g, " ").trim();
+    if (term) {
+      q = q.or(`actor_email.ilike.%${term}%,resource_id.ilike.%${term}%,action.ilike.%${term}%`);
+    }
+  }
+  if (filter.cursor) {
+    const cursor = decodeCursor(filter.cursor);
+    if (cursor) q = q.lt("occurred_at", cursor.occurredAt);
+  }
+  return q as T;
+}
