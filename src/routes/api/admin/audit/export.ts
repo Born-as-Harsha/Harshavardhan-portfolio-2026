@@ -68,7 +68,12 @@ export const Route = createFileRoute("/api/admin/audit/export")({
             },
           });
 
-          const body = source.pipeThrough(new CompressionStream("gzip"));
+          const body = source.pipeThrough(
+            new CompressionStream("gzip") as unknown as ReadableWritablePair<
+              Uint8Array,
+              Uint8Array
+            >,
+          );
 
           const { tryWriteAuditEvent, clientIpFrom } = await import("@/lib/audit.server");
           await tryWriteAuditEvent({
