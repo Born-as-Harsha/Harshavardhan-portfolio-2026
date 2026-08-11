@@ -17,6 +17,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as CertificationsCredentialIdRouteImport } from './routes/certifications.$credentialId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as ApiAdminAuditExportRouteImport } from './routes/api/admin/audit/export'
+import { Route as ApiAdminCertificatesValidateRouteImport } from './routes/api/admin/certificates/validate'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -62,6 +63,12 @@ const ApiAdminAuditExportRoute = ApiAdminAuditExportRouteImport.update({
   path: '/api/admin/audit/export',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminCertificatesValidateRoute =
+  ApiAdminCertificatesValidateRouteImport.update({
+    id: '/api/admin/certificates/validate',
+    path: '/api/admin/certificates/validate',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/certifications/$credentialId': typeof CertificationsCredentialIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
+  '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
   '/certifications/$credentialId': typeof CertificationsCredentialIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
+  '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -93,6 +102,7 @@ export interface FileRoutesById {
   '/certifications/$credentialId': typeof CertificationsCredentialIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
+  '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/certifications/$credentialId'
     | '/.mcp/invoke-tool/$tool'
     | '/api/admin/audit/export'
+    | '/api/admin/certificates/validate'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/certifications/$credentialId'
     | '/.mcp/invoke-tool/$tool'
     | '/api/admin/audit/export'
+    | '/api/admin/certificates/validate'
   id:
     | '__root__'
     | '/'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
     | '/certifications/$credentialId'
     | '/.mcp/invoke-tool/$tool'
     | '/api/admin/audit/export'
+    | '/api/admin/certificates/validate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -136,6 +149,7 @@ export interface RootRouteChildren {
   CertificationsCredentialIdRoute: typeof CertificationsCredentialIdRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiAdminAuditExportRoute: typeof ApiAdminAuditExportRoute
+  ApiAdminCertificatesValidateRoute: typeof ApiAdminCertificatesValidateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -196,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminAuditExportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/certificates/validate': {
+      id: '/api/admin/certificates/validate'
+      path: '/api/admin/certificates/validate'
+      fullPath: '/api/admin/certificates/validate'
+      preLoaderRoute: typeof ApiAdminCertificatesValidateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -209,6 +230,7 @@ const rootRouteChildren: RootRouteChildren = {
   CertificationsCredentialIdRoute: CertificationsCredentialIdRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiAdminAuditExportRoute: ApiAdminAuditExportRoute,
+  ApiAdminCertificatesValidateRoute: ApiAdminCertificatesValidateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
