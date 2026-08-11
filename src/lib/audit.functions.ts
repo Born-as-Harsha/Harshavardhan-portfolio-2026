@@ -5,53 +5,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import {
+  applyAuditFilter,
   auditFilterSchema,
-  decodeCursor,
   encodeCursor,
   type AuditEvent,
-  type AuditFilter,
 } from "./audit-query";
+import { assertAdmin, type AuthedContext } from "./audit-rbac";
 
-type AuthedContext = { supabase: SupabaseLike; userId: string; claims?: { email?: string } };
-
-type SupabaseLike = {
-  rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
-  from: (table: string) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
-};
-
-export class ForbiddenError extends Error {
-  constructor() {
-    super("Forbidden");
-  }
-}
-
-export async function assertAdmin(context: AuthedContext): Promise<void> {
-  const { data, error } = await context.supabase.rpc("has_role", {
-    _user_id: context.userId,
-    _role: "admin",
-  });
-  if (error || data !== true) throw new ForbiddenError();
-}
-
-/** Applies a validated filter to a PostgREST query builder. */
-export function applyAuditFilter<T>(query: T, filter: AuditFilter): T {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let q = query as any;
-  if (filter.action?.length) q = q.in("action", filter.action);
-  if (filter.resourceType?.length) q = q.in("resource_type", filter.resourceType);
-  if (filter.outcome?.length) q = q.in("outcome", filter.outcome);
-  if (filter.from) q = q.gte("occurred_at", filter.from);
-  if (filter.to) q = q.lte("occurred_at", filter.to);
-  if (filter.q) {
-    const term = filter.q.replace(/[%,()]/g, " ");
-    q = q.or(`actor_email.ilike.%${term}%,resource_id.ilike.%${term}%,action.ilike.%${term}%`);
-  }
-  if (filter.cursor) {
-    const cursor = decodeCursor(filter.cursor);
-    if (cursor) q = q.lt("occurred_at", cursor.occurredAt);
-  }
-  return q as T;
-}
+export { assertAdmin, ForbiddenError } from "./audit-rbac";
 
 export const listAuditEvents = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
