@@ -106,6 +106,7 @@ export const Route = createFileRoute("/api/admin/audit/export")({
             status: 200,
             headers: {
               ...SECURITY_HEADERS,
+              ...quota,
               "content-type": "application/gzip",
               "content-encoding": "identity",
               "content-disposition": `attachment; filename="${auditExportFileName()}"`,
