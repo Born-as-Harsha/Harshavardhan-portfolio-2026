@@ -58,7 +58,9 @@ function AuditPage() {
       const res = await fetch(`/api/admin/audit/export?${params}`, {
         headers: { Authorization: `Bearer ${data.session?.access_token ?? ""}` },
       });
-      if (!res.ok) throw new Error(`Export failed (${res.status})`);
+      if (!res.ok) {
+        throw new Error(describeAdminFailure(res.status, res.headers.get("retry-after")));
+      }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
