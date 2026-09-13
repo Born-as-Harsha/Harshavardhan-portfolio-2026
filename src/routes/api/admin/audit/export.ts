@@ -19,7 +19,14 @@ import {
   filterFromSearchParams,
   type AuditEvent,
 } from "@/lib/audit-query";
-import { HttpError, jsonError, requireAdmin, SECURITY_HEADERS } from "@/lib/api-auth.server";
+import {
+  enforceRateLimit,
+  HttpError,
+  jsonError,
+  requireAdmin,
+  SECURITY_HEADERS,
+} from "@/lib/api-auth.server";
+import { RATE_LIMITS } from "@/lib/rate-limit";
 
 const PAGE_SIZE = 500;
 

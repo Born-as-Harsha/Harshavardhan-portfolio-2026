@@ -19,7 +19,15 @@ import {
   type ManifestRecord,
 } from "@/lib/cert-upload-validation";
 import { CERT_UPLOAD_RECORDS } from "@/lib/cert-manifest";
-import { HttpError, jsonError, requireAdmin, SECURITY_HEADERS } from "@/lib/api-auth.server";
+import {
+  assertRequestSize,
+  enforceRateLimit,
+  HttpError,
+  jsonError,
+  requireAdmin,
+  SECURITY_HEADERS,
+} from "@/lib/api-auth.server";
+import { RATE_LIMITS } from "@/lib/rate-limit";
 
 export const Route = createFileRoute("/api/admin/certificates/validate")({
   server: {
