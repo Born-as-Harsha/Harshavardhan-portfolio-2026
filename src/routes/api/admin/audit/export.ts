@@ -29,6 +29,12 @@ export const Route = createFileRoute("/api/admin/audit/export")({
       GET: async ({ request }) => {
         try {
           const caller = await requireAdmin(request);
+          const quota = enforceRateLimit(
+            request,
+            "audit-export",
+            RATE_LIMITS.auditExport,
+            caller.userId,
+          );
           const url = new URL(request.url);
           const filter = filterFromSearchParams(url.searchParams);
 
