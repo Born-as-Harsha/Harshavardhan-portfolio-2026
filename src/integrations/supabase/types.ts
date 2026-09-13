@@ -133,6 +133,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_bootstrap_available: { Args: never; Returns: boolean }
       append_audit_event: {
         Args: {
           _action: string
@@ -177,6 +178,7 @@ export type Database = {
         }
         Returns: string
       }
+      claim_admin_bootstrap: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
