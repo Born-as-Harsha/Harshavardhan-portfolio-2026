@@ -9,6 +9,7 @@
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { consumeRateLimit, rateLimitHeaders, type RateLimitPolicy } from "./rate-limit";
 
 export type AuthedCaller = {
   supabase: SupabaseClient<Database>;
