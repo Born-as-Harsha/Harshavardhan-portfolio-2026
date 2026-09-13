@@ -108,7 +108,7 @@ export const Route = createFileRoute("/api/admin/certificates/validate")({
           });
 
           const status = result.status === "ok" ? 200 : UPLOAD_ERROR_HTTP[result.code];
-          return Response.json(result, { status, headers: SECURITY_HEADERS });
+          return Response.json(result, { status, headers: { ...SECURITY_HEADERS, ...quota } });
         } catch (error) {
           return jsonError(error);
         }
