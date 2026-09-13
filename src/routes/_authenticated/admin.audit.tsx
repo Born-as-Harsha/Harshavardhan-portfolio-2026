@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listAuditEvents, verifyAuditChain, currentUserIsAdmin } from "@/lib/audit.functions";
 import { AUDIT_ACTIONS, AUDIT_OUTCOMES, type AuditEvent } from "@/lib/audit-query";
 import { supabase } from "@/integrations/supabase/client";
+import { AdminAccessNotice, describeAdminFailure } from "@/components/admin-access-notice";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
   head: () => ({
@@ -58,7 +59,9 @@ function AuditPage() {
       const res = await fetch(`/api/admin/audit/export?${params}`, {
         headers: { Authorization: `Bearer ${data.session?.access_token ?? ""}` },
       });
-      if (!res.ok) throw new Error(`Export failed (${res.status})`);
+      if (!res.ok) {
+        throw new Error(describeAdminFailure(res.status, res.headers.get("retry-after")));
+      }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -74,7 +77,12 @@ function AuditPage() {
   }
 
   if (role.isLoading) return <Shell>Checking permissions…</Shell>;
-  if (!role.data?.isAdmin) return <Shell>Administrator access required.</Shell>;
+  if (!role.data?.isAdmin)
+    return (
+      <Shell>
+        <AdminAccessNotice email={role.data?.email ?? null} />
+      </Shell>
+    );
 
   const rows = (events.data?.events ?? []) as AuditEvent[];
 

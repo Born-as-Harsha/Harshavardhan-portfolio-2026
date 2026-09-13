@@ -13,6 +13,7 @@ export const AUDIT_ACTIONS = [
   "certificate.reject",
   "audit.export",
   "audit.verify",
+  "admin.bootstrap",
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
@@ -22,6 +23,7 @@ export const AUDIT_RESOURCE_TYPES = [
   "certificate",
   "telemetry_export",
   "audit_log",
+  "user_role",
 ] as const;
 
 export const AUDIT_OUTCOMES = ["allow", "deny", "error"] as const;

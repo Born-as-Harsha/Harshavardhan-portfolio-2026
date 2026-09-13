@@ -9,6 +9,7 @@
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { consumeRateLimit, rateLimitHeaders, type RateLimitPolicy } from "./rate-limit";
 
 export type AuthedCaller = {
   supabase: SupabaseClient<Database>;
@@ -21,6 +22,8 @@ export class HttpError extends Error {
     readonly status: number,
     readonly code: string,
     message?: string,
+    /** Extra response headers, e.g. `retry-after` on a 429. */
+    readonly headers: Record<string, string> = {},
   ) {
     super(message ?? code);
   }
@@ -35,8 +38,46 @@ export function jsonError(error: unknown): Response {
   }
   return Response.json(
     { error: err.code, message: err.message },
-    { status: err.status, headers: SECURITY_HEADERS },
+    { status: err.status, headers: { ...SECURITY_HEADERS, ...err.headers } },
   );
+}
+
+/**
+ * Rejects a request that declares (or turns out to carry) more bytes than the
+ * endpoint accepts, before anything is buffered into memory.
+ */
+export function assertRequestSize(request: Request, maxBytes: number): void {
+  const declared = Number(request.headers.get("content-length") ?? "0");
+  if (Number.isFinite(declared) && declared > maxBytes) {
+    throw new HttpError(413, "E_SIZE", "The request body is larger than this endpoint accepts.");
+  }
+}
+
+/**
+ * Applies a fixed-window quota. Keyed by authenticated user when known so one
+ * abusive account cannot exhaust everyone's budget, otherwise by client IP.
+ */
+export function enforceRateLimit(
+  request: Request,
+  bucket: string,
+  policy: RateLimitPolicy,
+  identity?: string | null,
+): Record<string, string> {
+  const ip =
+    request.headers.get("cf-connecting-ip") ??
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    "unknown";
+  const decision = consumeRateLimit(`${bucket}:${identity ?? `ip:${ip}`}`, policy);
+  const headers = rateLimitHeaders(decision);
+  if (!decision.allowed) {
+    throw new HttpError(
+      429,
+      "rate_limited",
+      "Too many requests. Wait a moment and try again.",
+      headers,
+    );
+  }
+  return headers;
 }
 
 export const SECURITY_HEADERS: Record<string, string> = {

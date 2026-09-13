@@ -19,7 +19,15 @@ import {
   type ManifestRecord,
 } from "@/lib/cert-upload-validation";
 import { CERT_UPLOAD_RECORDS } from "@/lib/cert-manifest";
-import { HttpError, jsonError, requireAdmin, SECURITY_HEADERS } from "@/lib/api-auth.server";
+import {
+  assertRequestSize,
+  enforceRateLimit,
+  HttpError,
+  jsonError,
+  requireAdmin,
+  SECURITY_HEADERS,
+} from "@/lib/api-auth.server";
+import { RATE_LIMITS } from "@/lib/rate-limit";
 
 export const Route = createFileRoute("/api/admin/certificates/validate")({
   server: {
@@ -27,12 +35,15 @@ export const Route = createFileRoute("/api/admin/certificates/validate")({
       POST: async ({ request }) => {
         try {
           const caller = await requireAdmin(request);
+          const quota = enforceRateLimit(
+            request,
+            "cert-validate",
+            RATE_LIMITS.certificateValidate,
+            caller.userId,
+          );
 
           // Reject oversized bodies before buffering anything.
-          const declaredLength = Number(request.headers.get("content-length") ?? "0");
-          if (Number.isFinite(declaredLength) && declaredLength > UPLOAD_MAX_BYTES * 1.1) {
-            throw new HttpError(413, "E_SIZE", "The upload exceeds the 20 MB limit.");
-          }
+          assertRequestSize(request, Math.ceil(UPLOAD_MAX_BYTES * 1.1));
 
           const form = await request.formData();
           const file = form.get("file");
@@ -97,7 +108,7 @@ export const Route = createFileRoute("/api/admin/certificates/validate")({
           });
 
           const status = result.status === "ok" ? 200 : UPLOAD_ERROR_HTTP[result.code];
-          return Response.json(result, { status, headers: SECURITY_HEADERS });
+          return Response.json(result, { status, headers: { ...SECURITY_HEADERS, ...quota } });
         } catch (error) {
           return jsonError(error);
         }

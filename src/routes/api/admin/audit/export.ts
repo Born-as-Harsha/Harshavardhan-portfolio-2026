@@ -19,7 +19,14 @@ import {
   filterFromSearchParams,
   type AuditEvent,
 } from "@/lib/audit-query";
-import { HttpError, jsonError, requireAdmin, SECURITY_HEADERS } from "@/lib/api-auth.server";
+import {
+  enforceRateLimit,
+  HttpError,
+  jsonError,
+  requireAdmin,
+  SECURITY_HEADERS,
+} from "@/lib/api-auth.server";
+import { RATE_LIMITS } from "@/lib/rate-limit";
 
 const PAGE_SIZE = 500;
 
@@ -29,6 +36,12 @@ export const Route = createFileRoute("/api/admin/audit/export")({
       GET: async ({ request }) => {
         try {
           const caller = await requireAdmin(request);
+          const quota = enforceRateLimit(
+            request,
+            "audit-export",
+            RATE_LIMITS.auditExport,
+            caller.userId,
+          );
           const url = new URL(request.url);
           const filter = filterFromSearchParams(url.searchParams);
 
@@ -93,6 +106,7 @@ export const Route = createFileRoute("/api/admin/audit/export")({
             status: 200,
             headers: {
               ...SECURITY_HEADERS,
+              ...quota,
               "content-type": "application/gzip",
               "content-encoding": "identity",
               "content-disposition": `attachment; filename="${auditExportFileName()}"`,
