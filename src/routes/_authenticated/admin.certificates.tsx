@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { sha256Of, type ValidationResult } from "@/lib/cert-upload-validation";
+import { describeAdminFailure } from "@/components/admin-access-notice";
 
 export const Route = createFileRoute("/_authenticated/admin/certificates")({
   head: () => ({
@@ -51,6 +52,10 @@ function CertificatesPage() {
         headers: { Authorization: `Bearer ${data.session?.access_token ?? ""}` },
         body: form,
       });
+      if (res.status === 401 || res.status === 403 || res.status === 429) {
+        setError(describeAdminFailure(res.status, res.headers.get("retry-after")));
+        return;
+      }
       const body = (await res.json()) as ValidationResult;
       setResult(body);
     } catch {
