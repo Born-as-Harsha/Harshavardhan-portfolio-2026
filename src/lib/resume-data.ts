@@ -165,11 +165,37 @@ export const SKILLS = SKILL_GROUPS.map((g) => ({
   items: g.items.map((it) => it.name),
 }));
 
-export const PROJECTS = [
+export type ProjectCategory = "RTL" | "FPGA" | "Analog" | "Software" | "ML";
+
+export type CaseStudy = {
+  /** One-line framing of the engineering problem. */
+  problem: string;
+  /** The approach taken, in 2–4 concrete steps. */
+  approach: string[];
+  /** Measurable or verifiable outcomes. */
+  results: string[];
+  /** What the work taught, honestly stated. */
+  learnings: string;
+  /** Optional live/interactive artifact for the demo rail. */
+  demo?: { label: string; url: string; kind: "waveform" | "repo" | "notebook" | "app" };
+};
+
+export const PROJECTS: Array<{
+  title: string;
+  tag: string;
+  icon: string;
+  category: ProjectCategory;
+  tech: string[];
+  description: string;
+  highlights: string[];
+  github: string;
+  caseStudy: CaseStudy;
+}> = [
   {
     title: "Pipelined RISC-V (RV32I) Processor Core",
     tag: "RTL · Computer Architecture",
     icon: "Cpu",
+    category: "RTL",
     tech: ["Verilog HDL", "Xilinx Vivado", "ModelSim", "GTKWave"],
     description:
       "Designed and verified a 5-stage pipelined RISC-V (RV32I) processor core in Verilog HDL, featuring hazard detection, forwarding units, and instruction/data cache simulation.",
@@ -179,11 +205,30 @@ export const PROJECTS = [
       "Instruction & Data cache integration",
     ],
     github: PROFILE.github + "/RISCV-Pipelined-Core",
+    caseStudy: {
+      problem:
+        "A single-cycle RV32I core wastes the critical path: every instruction pays for the slowest stage. The goal was a pipelined core that keeps correctness under data and control hazards.",
+      approach: [
+        "Split the datapath into IF / ID / EX / MEM / WB stages with pipeline registers between each.",
+        "Added a hazard-detection unit that stalls on load-use and a forwarding unit that bypasses EX/MEM and MEM/WB results.",
+        "Simulated instruction and data cache behaviour to study memory stalls separately from pipeline stalls.",
+        "Verified each stage with directed testbenches in ModelSim and inspected waveforms in GTKWave.",
+      ],
+      results: [
+        "Correct execution of the RV32I integer instruction set across directed test programs.",
+        "Load-use hazards resolved with a single stall cycle instead of a full flush.",
+        "Clean synthesis in Vivado with no inferred latches.",
+      ],
+      learnings:
+        "Pipelining is mostly a hazard-management problem, not a datapath problem — most of the debugging time went into forwarding corner cases, not arithmetic.",
+      demo: { label: "Browse the RTL", url: PROFILE.github + "/RISCV-Pipelined-Core", kind: "repo" },
+    },
   },
   {
     title: "FPGA-Based 8-Point Fast Fourier Transform (FFT) Processor",
     tag: "RTL · DSP Architecture",
     icon: "Radio",
+    category: "FPGA",
     tech: ["Verilog HDL", "Xilinx Vivado", "MATLAB"],
     description:
       "Implemented a butterfly-architecture-based 8-point FFT processor in Verilog for high-speed digital signal processing on FPGA, verifying accuracy against MATLAB models.",
@@ -193,46 +238,194 @@ export const PROJECTS = [
       "Validation with MATLAB test signals",
     ],
     github: PROFILE.github + "/FPGA-FFT-Processor",
+    caseStudy: {
+      problem:
+        "Software FFTs are too slow for streaming signal paths. The task was a hardware 8-point FFT that stays numerically faithful in fixed point.",
+      approach: [
+        "Built a radix-2 butterfly unit and reused it across three computation stages.",
+        "Chose a fixed-point word length and scaling schedule to avoid overflow at each stage.",
+        "Generated reference vectors in MATLAB and compared the RTL output bit-for-bit.",
+      ],
+      results: [
+        "Output matched the MATLAB double-precision reference within the expected fixed-point error bound.",
+        "Single reusable butterfly unit kept LUT usage low compared with a fully unrolled design.",
+      ],
+      learnings:
+        "In fixed-point DSP hardware, the scaling plan matters more than the arithmetic — most accuracy loss came from where I truncated, not how I multiplied.",
+      demo: { label: "Browse the RTL", url: PROFILE.github + "/FPGA-FFT-Processor", kind: "repo" },
+    },
   },
   {
     title: "FPGA-Based 8-Bit ALU Using Verilog HDL",
     tag: "RTL · FPGA",
     icon: "Binary",
+    category: "FPGA",
     tech: ["Verilog HDL", "Xilinx Vivado", "FPGA"],
     description:
       "Designed and verified an 8-bit Arithmetic Logic Unit in Verilog HDL targeting an FPGA, with testbench-driven simulation and synthesis.",
     highlights: ["8-bit ALU operations", "Testbench verification", "FPGA synthesis flow"],
     github: PROFILE.github + "/FPGA-8bit-ALU-Verilog",
+    caseStudy: {
+      problem:
+        "An ALU's adder choice sets the critical path of a whole datapath. I wanted a measured comparison rather than a textbook assumption.",
+      approach: [
+        "Implemented the 8-bit ALU twice: once with a ripple-carry adder, once with carry look-ahead.",
+        "Wrote an exhaustive testbench across operand pairs and opcodes.",
+        "Synthesised both variants in Vivado and compared delay and resource usage.",
+      ],
+      results: [
+        "Carry look-ahead reduced worst-case carry propagation delay at a measurable area cost.",
+        "Findings became my first published paper (IJIRT-track conference, 2026).",
+      ],
+      learnings:
+        "The architecture trade-off only becomes real after synthesis — pre-synthesis simulation hides the timing story entirely.",
+      demo: { label: "Browse the RTL", url: PROFILE.github + "/FPGA-8bit-ALU-Verilog", kind: "repo" },
+    },
   },
   {
     title: "DC Analysis and Short Channel Effects in MOSFETs",
     tag: "Analog VLSI",
     icon: "Microchip",
+    category: "Analog",
     tech: ["NI Multisim", "LTspice"],
     description:
       "Analyzed NMOS and PMOS transistor characteristics including short-channel effects and channel length modulation across operating regions.",
     highlights: ["I_D-V_GS / I_D-V_DS plots", "Short-channel analysis", "Device-level insight"],
     github: PROFILE.github + "/MOSFET-DC-Analysis",
+    caseStudy: {
+      problem:
+        "Long-channel square-law models stop predicting real device current once channels shrink. I wanted to see where the model breaks.",
+      approach: [
+        "Swept I_D-V_GS and I_D-V_DS for NMOS and PMOS devices in Multisim and LTspice.",
+        "Extracted threshold voltage and observed channel-length modulation in saturation.",
+        "Compared short-channel device behaviour against the long-channel prediction.",
+      ],
+      results: [
+        "Documented the divergence between square-law prediction and simulated short-channel current.",
+        "Produced a reusable set of characterisation plots for coursework and design reference.",
+      ],
+      learnings:
+        "Device physics sets the ceiling on every digital design decision above it — output resistance in saturation is never actually infinite.",
+      demo: { label: "View the analysis", url: PROFILE.github + "/MOSFET-DC-Analysis", kind: "repo" },
+    },
   },
   {
     title: "Student Activity & Achievement Management System",
     tag: "Python Full Stack",
     icon: "FileCode2",
+    category: "Software",
     tech: ["Python", "Full Stack", "Web"],
     description:
       "Web-based system to manage student extracurricular activities and achievements, built with full-stack Python.",
     highlights: ["CRUD workflows", "Activity tracking", "Data management"],
     github: PROFILE.github + "/Student-Activity-Tracker",
+    caseStudy: {
+      problem:
+        "Student activity records lived in scattered spreadsheets, so nobody could produce a reliable achievement history on demand.",
+      approach: [
+        "Modelled students, activities and achievements as related records with validated input.",
+        "Built create / read / update / delete flows over a Python web stack.",
+        "Added filtered views so a record can be retrieved by student or by activity type.",
+      ],
+      results: [
+        "Single source of truth replacing ad-hoc spreadsheets.",
+        "Achievement history retrievable in seconds instead of manual collation.",
+      ],
+      learnings:
+        "Most of the value came from getting the data model right first; the interface was the easy half.",
+      demo: { label: "Browse the code", url: PROFILE.github + "/Student-Activity-Tracker", kind: "app" },
+    },
   },
   {
     title: "Machine Learning for Weather Data Analysis",
     tag: "Python · ML",
     icon: "BrainCircuit",
+    category: "ML",
     tech: ["Python", "scikit-learn", "Pandas"],
     description:
       "End-to-end weather data pipeline using regression and clustering algorithms with standard evaluation metrics.",
     highlights: ["EDA pipeline", "Regression + K-Means", "Model evaluation"],
     github: PROFILE.github + "/ML-Weather-Analysis",
+    caseStudy: {
+      problem:
+        "Raw weather station data is noisy and incomplete, which makes naive models look better than they are.",
+      approach: [
+        "Cleaned and explored the dataset in Pandas, handling missing readings explicitly.",
+        "Fitted regression models for continuous prediction and K-Means for regime clustering.",
+        "Evaluated with held-out data and standard error metrics rather than training-set scores.",
+      ],
+      results: [
+        "A reproducible end-to-end pipeline from raw CSV to evaluated model.",
+        "Clustering surfaced distinct seasonal regimes in the data.",
+      ],
+      learnings:
+        "Evaluation discipline matters more than model choice — the first 'good' result was leakage from the training split.",
+      demo: { label: "Open the notebook", url: PROFILE.github + "/ML-Weather-Analysis", kind: "notebook" },
+    },
+  },
+];
+
+/** Chronological milestones for the interactive timeline. */
+export const TIMELINE: Array<{
+  year: string;
+  date: string;
+  title: string;
+  org: string;
+  kind: "education" | "internship" | "research" | "project" | "award";
+  detail: string;
+  link?: string;
+}> = [
+  {
+    year: "2024",
+    date: "Aug 2024",
+    title: "Started B.Tech ECE",
+    org: "KLEF University",
+    kind: "education",
+    detail: "Began the Electronics & Communication Engineering programme, currently holding a 9.68 / 10 CGPA.",
+  },
+  {
+    year: "2025",
+    date: "2025",
+    title: "First RTL designs on FPGA",
+    org: "Self-directed",
+    kind: "project",
+    detail: "Moved from gate-level coursework to full Verilog modules: 8-bit ALU, then an 8-point FFT datapath.",
+  },
+  {
+    year: "2026",
+    date: "Apr – Jun 2026",
+    title: "Siemens Conceptual CAE Virtual Internship",
+    org: "AICTE – EduSkills",
+    kind: "internship",
+    detail: "Eight weeks of structured design and simulation modules, weekly assessments and a final assessment test.",
+    link: CERT_SOURCES.siemens,
+  },
+  {
+    year: "2026",
+    date: "May – Jun 2026",
+    title: "FPGA & VLSI Summer Internship",
+    org: "Sense Semiconductor & IT Solutions (SSIT)",
+    kind: "internship",
+    detail: "Foundation course in FPGA & VLSI with hands-on RTL workflows and FPGA prototyping (Cert. SSIT-2026-1196).",
+    link: CERT_SOURCES.ssit,
+  },
+  {
+    year: "2026",
+    date: "2026",
+    title: "Reviewer appointment",
+    org: "IJIRT (ISSN 2349-6002)",
+    kind: "award",
+    detail: "Invited to review submissions for the International Journal of Innovative Research in Technology.",
+    link: CERT_SOURCES.ijirt,
+  },
+  {
+    year: "2026",
+    date: "2026",
+    title: "First research publication",
+    org: "Conference Paper",
+    kind: "research",
+    detail:
+      "Evaluation of Ripple Carry and Carry Look-Ahead adder-based 8-bit ALU architectures in Verilog HDL.",
   },
 ];
 
