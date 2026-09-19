@@ -165,7 +165,32 @@ export const SKILLS = SKILL_GROUPS.map((g) => ({
   items: g.items.map((it) => it.name),
 }));
 
-export const PROJECTS = [
+export type ProjectCategory = "RTL" | "FPGA" | "Analog" | "Software" | "ML";
+
+export type CaseStudy = {
+  /** One-line framing of the engineering problem. */
+  problem: string;
+  /** The approach taken, in 2–4 concrete steps. */
+  approach: string[];
+  /** Measurable or verifiable outcomes. */
+  results: string[];
+  /** What the work taught, honestly stated. */
+  learnings: string;
+  /** Optional live/interactive artifact for the demo rail. */
+  demo?: { label: string; url: string; kind: "waveform" | "repo" | "notebook" | "app" };
+};
+
+export const PROJECTS: Array<{
+  title: string;
+  tag: string;
+  icon: string;
+  category: ProjectCategory;
+  tech: string[];
+  description: string;
+  highlights: string[];
+  github: string;
+  caseStudy: CaseStudy;
+}> = [
   {
     title: "Pipelined RISC-V (RV32I) Processor Core",
     tag: "RTL · Computer Architecture",
