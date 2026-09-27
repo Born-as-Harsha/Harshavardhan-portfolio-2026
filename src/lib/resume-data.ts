@@ -192,70 +192,6 @@ export const PROJECTS: Array<{
   caseStudy: CaseStudy;
 }> = [
   {
-    title: "Pipelined RISC-V (RV32I) Processor Core",
-    tag: "RTL · Computer Architecture",
-    icon: "Cpu",
-    category: "RTL",
-    tech: ["Verilog HDL", "Xilinx Vivado", "ModelSim", "GTKWave"],
-    description:
-      "Designed and verified a 5-stage pipelined RISC-V (RV32I) processor core in Verilog HDL, featuring hazard detection, forwarding units, and instruction/data cache simulation.",
-    highlights: [
-      "5-stage pipelined execution path",
-      "Hazard detection & forwarding logic",
-      "Instruction & Data cache integration",
-    ],
-    github: PROFILE.github + "/RISCV-Pipelined-Core",
-    caseStudy: {
-      problem:
-        "A single-cycle RV32I core wastes the critical path: every instruction pays for the slowest stage. The goal was a pipelined core that keeps correctness under data and control hazards.",
-      approach: [
-        "Split the datapath into IF / ID / EX / MEM / WB stages with pipeline registers between each.",
-        "Added a hazard-detection unit that stalls on load-use and a forwarding unit that bypasses EX/MEM and MEM/WB results.",
-        "Simulated instruction and data cache behaviour to study memory stalls separately from pipeline stalls.",
-        "Verified each stage with directed testbenches in ModelSim and inspected waveforms in GTKWave.",
-      ],
-      results: [
-        "Correct execution of the RV32I integer instruction set across directed test programs.",
-        "Load-use hazards resolved with a single stall cycle instead of a full flush.",
-        "Clean synthesis in Vivado with no inferred latches.",
-      ],
-      learnings:
-        "Pipelining is mostly a hazard-management problem, not a datapath problem — most of the debugging time went into forwarding corner cases, not arithmetic.",
-      demo: { label: "Browse the RTL", url: PROFILE.github + "/RISCV-Pipelined-Core", kind: "repo" },
-    },
-  },
-  {
-    title: "FPGA-Based 8-Point Fast Fourier Transform (FFT) Processor",
-    tag: "RTL · DSP Architecture",
-    icon: "Radio",
-    category: "FPGA",
-    tech: ["Verilog HDL", "Xilinx Vivado", "MATLAB"],
-    description:
-      "Implemented a butterfly-architecture-based 8-point FFT processor in Verilog for high-speed digital signal processing on FPGA, verifying accuracy against MATLAB models.",
-    highlights: [
-      "Butterfly computing unit optimization",
-      "Fixed-point arithmetic scaling",
-      "Validation with MATLAB test signals",
-    ],
-    github: PROFILE.github + "/FPGA-FFT-Processor",
-    caseStudy: {
-      problem:
-        "Software FFTs are too slow for streaming signal paths. The task was a hardware 8-point FFT that stays numerically faithful in fixed point.",
-      approach: [
-        "Built a radix-2 butterfly unit and reused it across three computation stages.",
-        "Chose a fixed-point word length and scaling schedule to avoid overflow at each stage.",
-        "Generated reference vectors in MATLAB and compared the RTL output bit-for-bit.",
-      ],
-      results: [
-        "Output matched the MATLAB double-precision reference within the expected fixed-point error bound.",
-        "Single reusable butterfly unit kept LUT usage low compared with a fully unrolled design.",
-      ],
-      learnings:
-        "In fixed-point DSP hardware, the scaling plan matters more than the arithmetic — most accuracy loss came from where I truncated, not how I multiplied.",
-      demo: { label: "Browse the RTL", url: PROFILE.github + "/FPGA-FFT-Processor", kind: "repo" },
-    },
-  },
-  {
     title: "FPGA-Based 8-Bit ALU Using Verilog HDL",
     tag: "RTL · FPGA",
     icon: "Binary",
@@ -389,7 +325,7 @@ export const TIMELINE: Array<{
     title: "First RTL designs on FPGA",
     org: "Self-directed",
     kind: "project",
-    detail: "Moved from gate-level coursework to full Verilog modules: 8-bit ALU, then an 8-point FFT datapath.",
+    detail: "Moved from gate-level coursework to full Verilog modules, starting with an 8-bit ALU verified on FPGA.",
   },
   {
     year: "2026",

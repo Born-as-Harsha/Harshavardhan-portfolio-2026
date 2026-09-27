@@ -18,6 +18,7 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as CertificationsCredentialIdRouteImport } from './routes/certifications.$credentialId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
 import { Route as AuthenticatedAdminCertificatesRouteImport } from './routes/_authenticated/admin.certificates'
 import { Route as ApiCertificatesAssetIdRouteImport } from './routes/api/certificates/$assetId'
@@ -72,6 +73,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
   id: '/admin/audit',
   path: '/admin/audit',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/certificates': typeof AuthenticatedAdminCertificatesRoute
   '/api/certificates/$assetId': typeof ApiCertificatesAssetIdRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
   '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/certificates': typeof AuthenticatedAdminCertificatesRoute
   '/api/certificates/$assetId': typeof ApiCertificatesAssetIdRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
   '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/certificates': typeof AuthenticatedAdminCertificatesRoute
   '/api/certificates/$assetId': typeof ApiCertificatesAssetIdRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/api/admin/audit/export': typeof ApiAdminAuditExportRoute
   '/api/admin/certificates/validate': typeof ApiAdminCertificatesValidateRoute
 }
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/certificates'
     | '/api/certificates/$assetId'
+    | '/admin/'
     | '/api/admin/audit/export'
     | '/api/admin/certificates/validate'
   fileRoutesByTo: FileRoutesByTo
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/certificates'
     | '/api/certificates/$assetId'
+    | '/admin'
     | '/api/admin/audit/export'
     | '/api/admin/certificates/validate'
   id:
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/certificates'
     | '/api/certificates/$assetId'
+    | '/_authenticated/admin/'
     | '/api/admin/audit/export'
     | '/api/admin/certificates/validate'
   fileRoutesById: FileRoutesById
@@ -276,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/audit': {
       id: '/_authenticated/admin/audit'
       path: '/admin/audit'
@@ -317,11 +336,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
   AuthenticatedAdminCertificatesRoute: typeof AuthenticatedAdminCertificatesRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
   AuthenticatedAdminCertificatesRoute: AuthenticatedAdminCertificatesRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
