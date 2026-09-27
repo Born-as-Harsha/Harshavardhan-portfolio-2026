@@ -325,7 +325,7 @@ export const TIMELINE: Array<{
     title: "First RTL designs on FPGA",
     org: "Self-directed",
     kind: "project",
-    detail: "Moved from gate-level coursework to full Verilog modules: 8-bit ALU, then an 8-point FFT datapath.",
+    detail: "Moved from gate-level coursework to full Verilog modules, starting with an 8-bit ALU verified on FPGA.",
   },
   {
     year: "2026",
