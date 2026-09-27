@@ -721,66 +721,21 @@ function Projects() {
       title="Shipping hardware ideas."
       subtitle="Selected RTL, FPGA, embedded and ML projects."
     >
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {PROJECTS.map((p, idx) => {
-          const ProjectIcon = projectIconMap[p.icon as keyof typeof projectIconMap] || Cpu;
-          return (
-            <motion.article
-              key={p.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: idx * 0.05 }}
-              className="glass group relative flex flex-col overflow-hidden rounded-3xl p-6"
-            >
-              <div className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="relative mb-5 aspect-[16/9] overflow-hidden rounded-2xl border border-white/5 bg-[var(--surface-1)]">
-                <div className="absolute inset-0 grid-bg opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-[oklch(0.65_0.22_280)]/15" />
-                <div className="absolute inset-0 grid place-items-center">
-                  <ProjectIcon
-                    className="h-16 w-16 text-primary/80 transition-transform duration-500 group-hover:scale-110"
-                    strokeWidth={1.2}
-                  />
-                </div>
-                <span className="absolute left-3 top-3 rounded-full bg-black/40 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-primary backdrop-blur">
-                  {p.tag}
-                </span>
-              </div>
-              <h3 className="font-[family-name:'Space_Grotesk',sans-serif] text-lg font-semibold">
-                {p.title}
-              </h3>
-              <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.description}</p>
-              <ul className="mt-3 space-y-1">
-                {p.highlights.map((h) => (
-                  <li key={h} className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="h-1 w-1 rounded-full bg-primary" />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {p.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <a
-                href={p.github ?? PROFILE.github}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-5 inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-primary transition-all hover:gap-2.5"
-              >
-                View on GitHub <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
-            </motion.article>
-          );
-        })}
+      <ProjectsShowcase />
+      <div className="mt-16">
+        <h3 className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+          Live demos
+        </h3>
+        <LiveDemos />
       </div>
+    </Section>
+  );
+}
+
+function Journey() {
+  return (
+    <Section id="timeline" eyebrow="Timeline" title="The journey so far.">
+      <InteractiveTimeline />
     </Section>
   );
 }
