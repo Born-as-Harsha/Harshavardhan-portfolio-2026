@@ -46,6 +46,7 @@ import {
   CORE_COURSES,
 } from "@/lib/resume-data";
 import { slugify } from "@/lib/resume-data";
+import { InteractiveTimeline, LiveDemos, ProjectsShowcase } from "@/components/portfolio-showcase";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -80,6 +81,7 @@ function Index() {
         <Coursework />
         <Skills />
         <Projects />
+        <Journey />
         <Experience />
         <Research />
         <Certifications />
