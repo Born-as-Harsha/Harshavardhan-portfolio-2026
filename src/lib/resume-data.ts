@@ -192,37 +192,6 @@ export const PROJECTS: Array<{
   caseStudy: CaseStudy;
 }> = [
   {
-    title: "FPGA-Based 8-Point Fast Fourier Transform (FFT) Processor",
-    tag: "RTL · DSP Architecture",
-    icon: "Radio",
-    category: "FPGA",
-    tech: ["Verilog HDL", "Xilinx Vivado", "MATLAB"],
-    description:
-      "Implemented a butterfly-architecture-based 8-point FFT processor in Verilog for high-speed digital signal processing on FPGA, verifying accuracy against MATLAB models.",
-    highlights: [
-      "Butterfly computing unit optimization",
-      "Fixed-point arithmetic scaling",
-      "Validation with MATLAB test signals",
-    ],
-    github: PROFILE.github + "/FPGA-FFT-Processor",
-    caseStudy: {
-      problem:
-        "Software FFTs are too slow for streaming signal paths. The task was a hardware 8-point FFT that stays numerically faithful in fixed point.",
-      approach: [
-        "Built a radix-2 butterfly unit and reused it across three computation stages.",
-        "Chose a fixed-point word length and scaling schedule to avoid overflow at each stage.",
-        "Generated reference vectors in MATLAB and compared the RTL output bit-for-bit.",
-      ],
-      results: [
-        "Output matched the MATLAB double-precision reference within the expected fixed-point error bound.",
-        "Single reusable butterfly unit kept LUT usage low compared with a fully unrolled design.",
-      ],
-      learnings:
-        "In fixed-point DSP hardware, the scaling plan matters more than the arithmetic — most accuracy loss came from where I truncated, not how I multiplied.",
-      demo: { label: "Browse the RTL", url: PROFILE.github + "/FPGA-FFT-Processor", kind: "repo" },
-    },
-  },
-  {
     title: "FPGA-Based 8-Bit ALU Using Verilog HDL",
     tag: "RTL · FPGA",
     icon: "Binary",
