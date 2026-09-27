@@ -14,6 +14,8 @@ export const AUDIT_ACTIONS = [
   "audit.export",
   "audit.verify",
   "admin.bootstrap",
+  "role.grant",
+  "role.revoke",
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
